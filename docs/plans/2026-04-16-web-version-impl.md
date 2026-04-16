@@ -4,9 +4,9 @@
 
 **Goal:** 把现有 React Native ArchTrail 应用的 C 端体验完整复刻到桌面端浏览器，复用移动端 mobile API（21 endpoints）和数据层代码。
 
-**Architecture:** Next.js 15 App Router 单仓库；数据层（types / apiClient / TanStack Query hooks / Zustand stores）从 `../app/src/` 拷贝并做 web 适配（device_id 改 localStorage、SSE 改 fetch+ReadableStream）；UI 全部用 Tailwind v4 + shadcn/ui 重写，桌面端三列/双列布局。地图用高德 JS API 2.0 替代 react-native-amap3d。
+**Architecture:** Next.js 16 App Router 单仓库；数据层（types / apiClient / TanStack Query hooks / Zustand stores）从 `../app/src/` 拷贝并做 web 适配（device_id 改 localStorage、SSE 改 fetch+ReadableStream）；UI 全部用 Tailwind v4 + shadcn/ui 重写，桌面端三列/双列布局。地图用高德 JS API 2.0 替代 react-native-amap3d。
 
-**Tech Stack:** Next.js 15 / React 19 / TypeScript / TailwindCSS v4 / shadcn/ui (Radix + lucide) / TanStack Query v5 + IndexedDB persist / Zustand v5 / @amap/amap-jsapi-loader / vitest + @testing-library/react / playwright
+**Tech Stack:** Next.js 16 / React 19 / TypeScript / TailwindCSS v4 / shadcn/ui (Radix + lucide) / TanStack Query v5 + IndexedDB persist / Zustand v5 / @amap/amap-jsapi-loader / vitest + @testing-library/react / playwright
 
 **Reference docs:**
 - `./2026-04-16-web-version-design.md` — 完整 design

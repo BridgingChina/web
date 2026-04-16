@@ -18,7 +18,7 @@
 
 | 维度 | 选型 | 理由 |
 |------|------|------|
-| 框架 | Next.js 15 + React 19 | App Router + RSC + SEO 友好 |
+| 框架 | Next.js 16 + React 19 | App Router + RSC + SEO 友好（实施时 latest stable 为 16.2，与 plan 已对齐）|
 | 样式 | Tailwind CSS v4 + shadcn/ui | 与 RAG/web admin 同源；与移动端 NativeWind 设计 token 可对齐 |
 | 数据 | TanStack Query v5 + Zustand v5 | 与移动端同栈，最大化复用 |
 | 持久化 | localStorage（device_id、language）+ IndexedDB（query persist） | Web 等价物 |
