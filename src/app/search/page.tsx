@@ -1,5 +1,5 @@
 'use client';
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -22,14 +22,13 @@ function SearchContent() {
 
   const [text, setText] = useState(initialQ);
   const [type, setType] = useState<SearchType>(initialType);
-  const [recent, setRecent] = useState<string[]>([]);
-
-  useEffect(() => {
+  const [recent, setRecent] = useState<string[]>(() => {
+    if (typeof window === 'undefined') return [];
     try {
-      const stored = JSON.parse(localStorage.getItem(RECENT_KEY) ?? '[]');
-      if (Array.isArray(stored)) setRecent(stored.slice(0, 8));
-    } catch { /* ignore */ }
-  }, []);
+      const stored = JSON.parse(window.localStorage.getItem(RECENT_KEY) ?? '[]');
+      return Array.isArray(stored) ? stored.slice(0, 8) : [];
+    } catch { return []; }
+  });
 
   const apiParams = initialQ ? { q: initialQ, type: type === 'all' ? undefined : type } : null;
   const { data, isLoading, error } = useSearch(apiParams);
