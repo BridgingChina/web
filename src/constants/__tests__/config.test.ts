@@ -23,11 +23,14 @@ describe('config', () => {
     expect(AMAP_KEY).toBe('test-amap-key');
   });
 
-  it('exposes QUERY_DEFAULTS with expected stale times', async () => {
+  it('exposes QUERY_DEFAULTS with nested shape used by query hooks', async () => {
     const { QUERY_DEFAULTS } = await import('../config');
-    expect(QUERY_DEFAULTS.LIST_STALE_TIME).toBe(5 * 60 * 1000);
-    expect(QUERY_DEFAULTS.DETAIL_STALE_TIME).toBe(30 * 60 * 1000);
-    expect(QUERY_DEFAULTS.CONFIG_STALE_TIME).toBe(24 * 60 * 60 * 1000);
+    expect(QUERY_DEFAULTS.config.staleTime).toBe(24 * 60 * 60 * 1000);
+    expect(QUERY_DEFAULTS.knowledgeTree.staleTime).toBe(60 * 60 * 1000);
+    expect(QUERY_DEFAULTS.detail.staleTime).toBe(30 * 60 * 1000);
+    expect(QUERY_DEFAULTS.bridgeList.staleTime).toBe(5 * 60 * 1000);
+    expect(QUERY_DEFAULTS.reviewToday.staleTime).toBe(5 * 60 * 1000);
+    expect(QUERY_DEFAULTS.realtime.staleTime).toBe(0);
   });
 
   it('falls back to empty string when env var unset', async () => {
