@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { ConfigProvider } from '@/providers/ConfigProvider';
 import { Header } from '@/components/layout/Header';
+import { QASheet } from '@/components/qa/QASheet';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <ConfigProvider>
             <Header />
             <main className="container mx-auto px-4 py-6">{children}</main>
+            <QASheet />
           </ConfigProvider>
         </QueryProvider>
       </body>
