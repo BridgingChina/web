@@ -6,6 +6,7 @@ import { QueryProvider } from '@/providers/QueryProvider';
 import { ConfigProvider } from '@/providers/ConfigProvider';
 import { Header } from '@/components/layout/Header';
 import { QASheet } from '@/components/qa/QASheet';
+import { ErrorBoundary } from '@/components/feedback/ErrorBoundary';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,7 +30,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <QueryProvider>
           <ConfigProvider>
             <Header />
-            <main className="container mx-auto px-4 py-6">{children}</main>
+            <main className="container mx-auto px-4 py-6">
+              <ErrorBoundary>{children}</ErrorBoundary>
+            </main>
             <QASheet />
           </ConfigProvider>
         </QueryProvider>

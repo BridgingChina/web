@@ -13,6 +13,7 @@ import { SectionAccordion } from '@/components/bridge/SectionAccordion';
 import { SourcesList } from '@/components/knowledge/SourcesList';
 import { FavoriteButton } from '@/components/common/FavoriteButton';
 import { RecordHistoryOnMount } from '@/components/common/RecordHistoryOnMount';
+import { ErrorState } from '@/components/feedback/ErrorState';
 
 export default function BridgeDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -21,7 +22,7 @@ export default function BridgeDetailPage() {
   const openQA = useQAStore((s) => s.open);
 
   if (isLoading) return <DetailSkeleton />;
-  if (error) return <p className="text-sm text-destructive">加载失败：{(error as Error).message}</p>;
+  if (error) return <ErrorState message={(error as Error).message} />;
   if (!bridge) return null;
 
   return (

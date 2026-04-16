@@ -13,6 +13,7 @@ import { L2Section } from '@/components/knowledge/L2Section';
 import { SourcesList } from '@/components/knowledge/SourcesList';
 import { FavoriteButton } from '@/components/common/FavoriteButton';
 import { RecordHistoryOnMount } from '@/components/common/RecordHistoryOnMount';
+import { ErrorState } from '@/components/feedback/ErrorState';
 
 export default function KnowledgePointPage() {
   const { id } = useParams<{ id: string }>();
@@ -21,7 +22,7 @@ export default function KnowledgePointPage() {
   const openQA = useQAStore((s) => s.open);
 
   if (isLoading) return <DetailSkeleton />;
-  if (error) return <p className="text-sm text-destructive">加载失败：{(error as Error).message}</p>;
+  if (error) return <ErrorState message={(error as Error).message} />;
   if (!kp) return null;
 
   const bridges = bridgesRes?.data?.bridges ?? [];
