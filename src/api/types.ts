@@ -35,16 +35,10 @@ export interface KnowledgeTreeLine {
   children: KnowledgeTreeCategory[];
 }
 
-export interface KnowledgeTreeSubCategory {
-  id: string;
-  name: string;
-  children: KnowledgeTreePoint[];
-}
-
 export interface KnowledgeTreeCategory {
   id: string;
   name: string;
-  children: KnowledgeTreeSubCategory[];
+  children: KnowledgeTreePoint[];
 }
 
 export interface KnowledgeTreePoint {

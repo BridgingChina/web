@@ -42,6 +42,6 @@ export function MainlineNav({ selectedId, onSelect }: Props) {
 
 function countPoints(line: KnowledgeTreeLine): number {
   let n = 0;
-  for (const cat of line.children) for (const sub of cat.children) n += sub.children.length;
+  for (const cat of line.children) n += cat.children.length;
   return n;
 }

@@ -6,7 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { ChevronRight, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { KnowledgeTreeCategory, KnowledgeTreeSubCategory } from '@/api/types';
+import type { KnowledgeTreeCategory } from '@/api/types';
 
 interface Props {
   selectedLineId: string | null;
@@ -51,33 +51,22 @@ function CategoryNode({ category }: { category: KnowledgeTreeCategory }) {
         <span>{category.name}</span>
       </button>
       {open && category.children.length > 0 && (
-        <ul className="space-y-1 border-t px-3 py-2">
-          {category.children.map((sub) => <SubCategoryNode key={sub.id} sub={sub} />)}
+        <ul className="space-y-0.5 border-t px-3 py-2">
+          {category.children.map((kp) => (
+            <li key={kp.id}>
+              <Link
+                href={`/knowledge/${kp.id}`}
+                className={cn(
+                  'flex items-start gap-2 rounded px-2 py-1.5 text-sm hover:bg-accent',
+                )}
+              >
+                <span className="flex-1">{kp.name}</span>
+                {kp.tags?.[0] && <Badge variant="secondary" className="text-[10px]">{kp.tags[0]}</Badge>}
+              </Link>
+            </li>
+          ))}
         </ul>
       )}
-    </li>
-  );
-}
-
-function SubCategoryNode({ sub }: { sub: KnowledgeTreeSubCategory }) {
-  return (
-    <li>
-      <p className="px-1 py-1 text-xs text-muted-foreground">{sub.name}</p>
-      <ul className="space-y-0.5">
-        {sub.children.map((kp) => (
-          <li key={kp.id}>
-            <Link
-              href={`/knowledge/${kp.id}`}
-              className={cn(
-                'flex items-start gap-2 rounded px-2 py-1.5 text-sm hover:bg-accent',
-              )}
-            >
-              <span className="flex-1">{kp.name}</span>
-              {kp.tags?.[0] && <Badge variant="secondary" className="text-[10px]">{kp.tags[0]}</Badge>}
-            </Link>
-          </li>
-        ))}
-      </ul>
     </li>
   );
 }

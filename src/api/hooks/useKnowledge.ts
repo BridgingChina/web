@@ -3,9 +3,11 @@ import { apiClient } from '../client';
 import { QUERY_DEFAULTS } from '../../constants/config';
 import type { ApiResponse, KnowledgeTree, KnowledgePointDetail, BridgeListItem, FlashCard } from '../types';
 
+const KNOWLEDGE_TREE_SCHEMA_VERSION = 'v2-3layer';
+
 export function useKnowledgeTree(depth?: number) {
   return useQuery({
-    queryKey: ['knowledgeTree', depth],
+    queryKey: ['knowledgeTree', KNOWLEDGE_TREE_SCHEMA_VERSION, depth],
     queryFn: () => apiClient.get<ApiResponse<KnowledgeTree>>('/knowledge/tree', { depth }),
     staleTime: QUERY_DEFAULTS.knowledgeTree.staleTime,
     select: (res) => res.data,

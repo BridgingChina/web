@@ -962,9 +962,9 @@ git commit -m "feat(qa): add global QASheet with SSE streaming render"
 - Create: `src/components/knowledge/KnowledgeTreeWeb.tsx`、`src/components/knowledge/MainlineCard.tsx`
 
 **步骤纲要**：
-1. 用 `useKnowledgeTree()` 拉数据
-2. 三列布局：左侧 4 主线 nav（sticky）+ 中间二/三级折叠目录 + 右侧 placeholder 区（v1 留白，v1.1 接 history/review）
-3. 每条三级条目（`type: 'knowledge_point'`）链到 `/knowledge/[id]`
+1. 用 `useKnowledgeTree()` 拉数据（响应形态：lvl1 → lvl2 → knowledge_point，3 层，Phase 3 已上线 2026-04-17）
+2. 三列布局：左侧 4 主线 nav（sticky）+ 中间二级折叠目录（展开后直接挂 KP 叶子）+ 右侧 placeholder 区（v1 留白，v1.1 接 history/review）
+3. 每条 KP 叶子（`type: 'knowledge_point'`）链到 `/knowledge/[id]`
 4. 写 `KnowledgeTreeWeb.test.tsx` 用 mock data 渲染，断言主线名称、点击展开
 5. typecheck + commit
 
