@@ -3,9 +3,9 @@ import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 type AmapEnv = { AMAP_SECURITY_CODE?: string };
 
-function getJscode(): string {
+async function getJscode(): Promise<string> {
   try {
-    const { env } = getCloudflareContext();
+    const { env } = await getCloudflareContext({ async: true });
     const v = (env as unknown as AmapEnv).AMAP_SECURITY_CODE;
     if (v) return v;
   } catch {
@@ -48,7 +48,7 @@ async function proxy(req: NextRequest, segments: string[]): Promise<Response> {
   const upstream = new URL(`${resolveUpstream(segments)}/${segments.join('/')}`);
   new URL(req.url).searchParams.forEach((v, k) => upstream.searchParams.set(k, v));
 
-  const jscode = getJscode();
+  const jscode = await getJscode();
   if (jscode) upstream.searchParams.set('jscode', jscode);
 
   const init: RequestInit = {
