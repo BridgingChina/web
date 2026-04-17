@@ -53,3 +53,8 @@ next-env.d.ts
 # tests
 playwright-report/
 test-results/
+
+# local tool artifacts
+.claude/
+.playwright-mcp/
+/map-*.png
