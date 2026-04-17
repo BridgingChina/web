@@ -10,13 +10,7 @@ export function QAResult() {
   const { status, outline, details, deepDive, sources, error } = useQAStore();
   const router = useRouter();
 
-  if (status === 'idle') {
-    return (
-      <p className="text-sm text-muted-foreground">
-        在上方输入问题，回答会以要点 → 详情 → 深挖 → 来源的顺序逐步展开。
-      </p>
-    );
-  }
+  if (status === 'idle') return null;
 
   if (status === 'connecting') {
     return (
