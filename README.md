@@ -73,7 +73,7 @@ See `docs/DEPLOY.md` and `docs/plans/2026-04-16-web-version-design.md` for the f
 Both Vercel and Cloudflare Pages are supported. Set:
 - `NEXT_PUBLIC_API_BASE_URL` — backend mobile API URL
 - `NEXT_PUBLIC_AMAP_KEY` — AMap JS API key (申请: https://lbs.amap.com/)
-- `NEXT_PUBLIC_AMAP_SECURITY_CODE` — 高德 JS 安全密钥（如配置）
+- `AMAP_SECURITY_CODE` — 高德 JS 安全密钥，服务端 secret（不加 `NEXT_PUBLIC_` 前缀）；由 `/api/amap` proxy 注入。Cloudflare 用 `wrangler secret put AMAP_SECURITY_CODE`。
 
 Then add the deployed origin to the backend's `CORS_ORIGINS` env var.
 

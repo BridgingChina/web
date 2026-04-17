@@ -6,7 +6,7 @@
 2. Set environment variables in Vercel dashboard:
    - `NEXT_PUBLIC_API_BASE_URL` — e.g. `https://api.archtrail.example.com/api/mobile/v1`
    - `NEXT_PUBLIC_AMAP_KEY` — JS API key from https://lbs.amap.com/
-   - `NEXT_PUBLIC_AMAP_SECURITY_CODE` — security code if your AMap project requires it
+   - `AMAP_SECURITY_CODE` — 高德 JS 安全密钥，**服务端 secret**（非 `NEXT_PUBLIC_`）；由 `/api/amap` proxy route 注入，客户端 bundle 不持有。Cloudflare 部署用 `wrangler secret put AMAP_SECURITY_CODE`；Vercel 设为普通 env var 即可（仅服务端可读）。
 3. Deploy — Vercel auto-detects Next.js 16.
 4. **Backend CORS:** add the deployed `*.vercel.app` origin to the FastAPI `CORS_ORIGINS` env var.
 
