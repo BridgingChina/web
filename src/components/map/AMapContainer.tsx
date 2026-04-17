@@ -64,7 +64,7 @@ export function AMapContainer({ onSelectBridge, onCountsChange }: Props) {
             bounds_ne_lng: ne.getLng(),
             bounds_sw_lat: sw.getLat(),
             bounds_sw_lng: sw.getLng(),
-            zoom: map.getZoom(),
+            zoom: Math.floor(map.getZoom()),
           });
         };
         let t: ReturnType<typeof setTimeout> | null = null;
