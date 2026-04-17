@@ -1,6 +1,6 @@
-# 筑脉 ArchTrail · Web
+# 桥知 BridgingChina · Web
 
-Next.js 16 + React 19 desktop web client for the ArchTrail bridge knowledge platform. Mirrors the React Native mobile app's C-side experience (browse / search / detail / map / Q&A / flashcards) on top of the existing FastAPI mobile API.
+Next.js 16 + React 19 desktop web client for the BridgingChina bridge knowledge platform. Mirrors the React Native mobile app's C-side experience (browse / search / detail / map / Q&A / flashcards) on top of the existing FastAPI mobile API.
 
 ## Stack
 

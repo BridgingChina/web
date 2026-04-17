@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: '筑脉 ArchTrail · 古桥文化知识库',
+  title: '桥知 BridgingChina · 古桥文化知识库',
   description: '中国古代桥梁知识图谱、地图、问答',
 };
 

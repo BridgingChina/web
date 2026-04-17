@@ -17,7 +17,7 @@ describe('deviceStore', () => {
     useDeviceStore.getState().init();
     const id = useDeviceStore.getState().deviceId;
     expect(id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
-    expect(localStorage.getItem('archtrail.device_id')).toBe(id);
+    expect(localStorage.getItem('bridgingchina.device_id')).toBe(id);
   });
 
   it('init() is idempotent (calling twice returns same id)', () => {

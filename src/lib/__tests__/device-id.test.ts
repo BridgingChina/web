@@ -17,6 +17,15 @@ describe('device-id', () => {
   });
 
   it('exports a stable storage key constant', () => {
-    expect(DEVICE_ID_KEY).toBe('archtrail.device_id');
+    expect(DEVICE_ID_KEY).toBe('bridgingchina.device_id');
+  });
+
+  it('migrates legacy archtrail.device_id key to new key', () => {
+    const legacyId = '11111111-2222-4333-8444-555555555555';
+    localStorage.setItem('archtrail.device_id', legacyId);
+    const id = getOrCreateDeviceId();
+    expect(id).toBe(legacyId);
+    expect(localStorage.getItem(DEVICE_ID_KEY)).toBe(legacyId);
+    expect(localStorage.getItem('archtrail.device_id')).toBeNull();
   });
 });

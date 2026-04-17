@@ -9,7 +9,7 @@ import { useSearch } from '@/api/hooks/useSearch';
 import Link from 'next/link';
 import type { SearchResult } from '@/api/types';
 
-const RECENT_KEY = 'archtrail.recent_searches';
+const RECENT_KEY = 'bridgingchina.recent_searches';
 const SUGGESTIONS = ['赵州桥', '拱桥', '敞肩拱', '广济桥', '宋元', '石拱桥'];
 
 type SearchType = 'all' | 'knowledge_point' | 'bridge';
