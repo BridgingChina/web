@@ -84,13 +84,18 @@ async function proxy(req: NextRequest, segments: string[]): Promise<Response> {
     init.body = await req.arrayBuffer();
   }
 
+  // Build a redacted view of the outbound URL so we can see exactly what gets sent.
+  const redacted = new URL(upstream.toString());
+  const jsv = redacted.searchParams.get('jscode');
+  if (jsv) redacted.searchParams.set('jscode', `[len=${jsv.length}]`);
+
   const res = await fetch(upstream.toString(), init);
   const outHeaders = new Headers(res.headers);
-  // Temporary diagnostic — value never exposed, only metadata.
   outHeaders.set(
     'x-amap-jscode-probe',
     `ctxKeys=${meta.ctxEnvKeyCount};ctxHas=${meta.ctxHasSecret ? 1 : 0};ctxLen=${meta.ctxSecretLen};procHas=${meta.procEnvHasSecret ? 1 : 0};procLen=${meta.procEnvSecretLen}`,
   );
+  outHeaders.set('x-amap-upstream', redacted.toString());
   return new Response(res.body, { status: res.status, headers: outHeaders });
 }
 
