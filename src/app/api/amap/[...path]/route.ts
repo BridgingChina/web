@@ -1,17 +1,42 @@
 import { NextRequest } from 'next/server';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 
+export const dynamic = 'force-dynamic';
+
 type AmapEnv = { AMAP_SECURITY_CODE?: string };
 
-async function getJscode(): Promise<string> {
+// Diagnostic-only metadata. Only booleans / lengths / key names are exposed —
+// the secret value itself is never returned to the caller.
+type JscodeMeta = {
+  ctxEnvKeyCount: number;
+  ctxHasSecret: boolean;
+  ctxSecretLen: number;
+  procEnvHasSecret: boolean;
+  procEnvSecretLen: number;
+};
+
+async function readJscode(): Promise<{ jscode: string; meta: JscodeMeta }> {
+  let ctxEnvKeyCount = -1;
+  let ctxSecret = '';
   try {
     const { env } = await getCloudflareContext({ async: true });
+    ctxEnvKeyCount = Object.keys(env as object).length;
     const v = (env as unknown as AmapEnv).AMAP_SECURITY_CODE;
-    if (v) return v;
+    if (v) ctxSecret = v;
   } catch {
-    // Not in Worker runtime (test/build-time) — fall through to process.env.
+    // fall through
   }
-  return process.env.AMAP_SECURITY_CODE ?? '';
+  const procSecret = process.env.AMAP_SECURITY_CODE ?? '';
+  return {
+    jscode: ctxSecret || procSecret,
+    meta: {
+      ctxEnvKeyCount,
+      ctxHasSecret: !!ctxSecret,
+      ctxSecretLen: ctxSecret.length,
+      procEnvHasSecret: !!procSecret,
+      procEnvSecretLen: procSecret.length,
+    },
+  };
 }
 
 // AMap 官方 serviceHost 代理约定：
@@ -48,7 +73,7 @@ async function proxy(req: NextRequest, segments: string[]): Promise<Response> {
   const upstream = new URL(`${resolveUpstream(segments)}/${segments.join('/')}`);
   new URL(req.url).searchParams.forEach((v, k) => upstream.searchParams.set(k, v));
 
-  const jscode = await getJscode();
+  const { jscode, meta } = await readJscode();
   if (jscode) upstream.searchParams.set('jscode', jscode);
 
   const init: RequestInit = {
@@ -60,7 +85,13 @@ async function proxy(req: NextRequest, segments: string[]): Promise<Response> {
   }
 
   const res = await fetch(upstream.toString(), init);
-  return new Response(res.body, { status: res.status, headers: res.headers });
+  const outHeaders = new Headers(res.headers);
+  // Temporary diagnostic — value never exposed, only metadata.
+  outHeaders.set(
+    'x-amap-jscode-probe',
+    `ctxKeys=${meta.ctxEnvKeyCount};ctxHas=${meta.ctxHasSecret ? 1 : 0};ctxLen=${meta.ctxSecretLen};procHas=${meta.procEnvHasSecret ? 1 : 0};procLen=${meta.procEnvSecretLen}`,
+  );
+  return new Response(res.body, { status: res.status, headers: outHeaders });
 }
 
 type RouteCtx = { params: Promise<{ path: string[] }> };
