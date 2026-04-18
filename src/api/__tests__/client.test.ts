@@ -6,7 +6,7 @@ describe('apiClient', () => {
   beforeEach(() => {
     vi.unstubAllEnvs();
     vi.unstubAllGlobals();
-    vi.stubEnv('NEXT_PUBLIC_API_BASE_URL', 'http://test/api/mobile/v1');
+    vi.stubEnv('NEXT_PUBLIC_API_BASE_URL', 'http://test/v1');
     useDeviceStore.setState({ deviceId: 'dev-uuid', language: 'zh-CN' });
   });
 

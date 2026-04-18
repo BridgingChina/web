@@ -4,7 +4,7 @@
 
 1. Import this directory as a Vercel project (or set Root Directory to `web/` if monorepo).
 2. Set environment variables in Vercel dashboard:
-   - `NEXT_PUBLIC_API_BASE_URL` — e.g. `https://api.bridgingchina.net/api/mobile/v1`
+   - `NEXT_PUBLIC_API_BASE_URL` — e.g. `https://console.bridgingchina.net/v1`（当前生产；`api.bridgingchina.net` 是对外契约目标，尚未启用）
    - `NEXT_PUBLIC_AMAP_KEY` — JS API key from https://lbs.amap.com/
    - `AMAP_SECURITY_CODE` — 高德 JS 安全密钥，**服务端 secret**（非 `NEXT_PUBLIC_`）；由 `/api/amap` proxy route 注入，客户端 bundle 不持有。Cloudflare 部署用 `wrangler secret put AMAP_SECURITY_CODE`；Vercel 设为普通 env var 即可（仅服务端可读）。
 3. Deploy — Vercel auto-detects Next.js 16.
@@ -24,7 +24,7 @@ npm run build
 npm run start  # node server.js or next start
 ```
 
-Set the env vars before `npm run start`. Front by nginx/caddy with SSE-friendly config (no buffering for `/api/mobile/v1/qa/ask`).
+Set the env vars before `npm run start`. Front by nginx/caddy with SSE-friendly config (no buffering for `/v1/qa/ask`).
 
 ## Post-deploy checklist
 

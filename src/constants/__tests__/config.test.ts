@@ -7,9 +7,9 @@ describe('config', () => {
   });
 
   it('exposes API_BASE_URL from NEXT_PUBLIC_API_BASE_URL env', async () => {
-    vi.stubEnv('NEXT_PUBLIC_API_BASE_URL', 'http://example.com/api/mobile/v1');
+    vi.stubEnv('NEXT_PUBLIC_API_BASE_URL', 'http://example.com/v1');
     const { API_BASE_URL } = await import('../config');
-    expect(API_BASE_URL).toBe('http://example.com/api/mobile/v1');
+    expect(API_BASE_URL).toBe('http://example.com/v1');
   });
 
   it('exposes API_TIMEOUT default 15000', async () => {
