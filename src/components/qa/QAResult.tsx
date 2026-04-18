@@ -67,7 +67,12 @@ export function QAResult() {
                       {detail.explanation}
                       {detail.citations?.length > 0 && (
                         <span className="ml-1 text-xs text-blue-600">
-                          {detail.citations.map((c) => `[${c}]`).join(' ')}
+                          {detail.citations
+                            .map((c) => {
+                              const idx = sources?.sources.findIndex((s) => s.id === c.source_id) ?? -1;
+                              return `[${idx >= 0 ? idx + 1 : '?'}]`;
+                            })
+                            .join(' ')}
                         </span>
                       )}
                     </p>
@@ -123,9 +128,9 @@ export function QAResult() {
         <section>
           <h3 className="mb-2 text-sm font-medium text-muted-foreground">来源</h3>
           <ol className="space-y-2 text-xs text-muted-foreground">
-            {sources.sources.map((s) => (
+            {sources.sources.map((s, i) => (
               <li key={s.id}>
-                <span className="text-blue-600">[{s.id}]</span> {s.title}
+                <span className="text-blue-600">[{i + 1}]</span> {s.title}
                 {s.author ? ` · ${s.author}` : ''} {s.location ? ` · ${s.location}` : ''}
               </li>
             ))}

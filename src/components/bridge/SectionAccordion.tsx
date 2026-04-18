@@ -35,8 +35,8 @@ export function SectionAccordion({ sections, sources }: { sections: BridgeSectio
                 ? <p className="text-sm text-muted-foreground">该章节内容待补充</p>
                 : (
                   <ul className="space-y-3">
-                    {(sec.l1.length > 0 ? sec.l1 : sec.l0).map(item => (
-                      <li key={item.id} className="rounded border bg-card p-3">
+                    {(sec.l1.length > 0 ? sec.l1 : sec.l0).map((item, i) => (
+                      <li key={item.id ?? `${k}-${i}`} className="rounded border bg-card p-3">
                         <p className="font-medium">{item.summary}</p>
                         {item.detail && <p className="mt-1 text-sm text-muted-foreground whitespace-pre-wrap">{item.detail}</p>}
                         <CitationBadges citations={item.citations} sources={sources} />

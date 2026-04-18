@@ -56,6 +56,11 @@ export interface KnowledgeTree {
 export interface Illustration { url: string; caption: string; }
 export interface RelatedTerm { id: string; name: string; }
 
+export interface Citation {
+  source_id: string;
+  title: string;
+}
+
 export interface KeyPoint {
   id: string;
   summary: string;
@@ -63,27 +68,27 @@ export interface KeyPoint {
   explanation?: string;
   illustrations?: Illustration[];
   related_terms?: RelatedTerm[];
-  citations?: number[];
+  citations?: Citation[];
 }
 
-export interface Comparison { title: string; content: string; citations: number[]; }
+export interface Comparison { title: string; content: string; citations: Citation[]; }
 
 export interface Controversy {
   title: string;
   description: string;
   confidence: string;
-  views: { position: string; citations: number[] }[];
+  views: { position: string; citations: Citation[] }[];
 }
 
 export interface FurtherReading { title: string; source_id: string; }
 
 export interface Source {
-  id: number;
+  id: string;
   title: string;
-  author: string;
   type: string;
-  excerpt: string;
-  location: string;
+  author?: string;
+  excerpt?: string;
+  location?: string;
 }
 
 export interface KnowledgePointDetail {
@@ -135,11 +140,11 @@ export interface ClustersResponse {
 export interface BridgeImage { url: string; caption: string; type: string; }
 
 export interface SectionContent {
-  id: string;
+  id?: string;
   summary: string;
   order?: number;
   detail?: string;
-  citations?: number[];
+  citations?: Citation[];
 }
 
 export interface BridgeSections {
@@ -211,7 +216,7 @@ export interface QAOutlineEvent {
 export interface QADetailEvent {
   key_point_id: string;
   explanation: string;
-  citations: number[];
+  citations: Citation[];
 }
 
 export interface QADeepDiveEvent {
