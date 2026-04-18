@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 const NAV = [
-  { href: '/', label: '知识图谱' },
+  { href: '/knowledge', label: '知识图谱' },
   { href: '/map', label: '地图' },
   { href: '/recognize', label: '识景' },
   { href: '/search', label: '搜索' },
@@ -24,7 +24,7 @@ export function Header() {
         <Link href="/" className="font-semibold tracking-tight">桥知 BridgingChina</Link>
         <nav className="flex gap-1 text-sm">
           {NAV.map((n) => {
-            const active = n.href === '/' ? pathname === '/' : pathname.startsWith(n.href);
+            const active = pathname.startsWith(n.href);
             return (
               <Link
                 key={n.href}

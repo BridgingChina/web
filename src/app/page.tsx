@@ -1,29 +1,34 @@
-'use client';
-import { useState } from 'react';
-import { MainlineNav } from '@/components/knowledge/MainlineNav';
-import { KnowledgeTreeWeb } from '@/components/knowledge/KnowledgeTreeWeb';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
-export default function HomePage() {
-  const [selectedLineId, setSelectedLineId] = useState<string | null>(null);
-
+export default function LandingPage() {
   return (
-    <div className="grid gap-6 lg:grid-cols-[220px_1fr_280px]">
-      <aside className="lg:sticky lg:top-20 lg:self-start">
-        <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">四大主线</p>
-        <MainlineNav selectedId={selectedLineId} onSelect={setSelectedLineId} />
-      </aside>
-
-      <section>
-        <h1 className="mb-4 text-2xl font-semibold tracking-tight">知识图谱</h1>
-        <KnowledgeTreeWeb selectedLineId={selectedLineId} />
-      </section>
-
-      <aside className="hidden lg:block lg:sticky lg:top-20 lg:self-start">
-        <div className="rounded-md border bg-card p-4">
-          <h2 className="mb-2 text-sm font-medium">最近浏览</h2>
-          <p className="text-xs text-muted-foreground">浏览历史将在「我的」页接入。</p>
-        </div>
-      </aside>
-    </div>
+    <section
+      className="relative -mx-4 -my-6 flex min-h-[calc(100dvh-3.5rem)] items-center justify-center overflow-hidden"
+      style={{
+        background:
+          'linear-gradient(135deg, #0a0f1e 0%, #14213d 55%, #1d3557 100%)',
+      }}
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-[10%] -top-[10%] h-[55%] w-[55%] rounded-full blur-3xl"
+        style={{
+          background:
+            'radial-gradient(circle, rgba(212,160,74,0.35) 0%, rgba(212,160,74,0) 70%)',
+        }}
+      />
+      <div className="relative flex flex-col items-center px-6 text-center">
+        <h1 className="font-serif text-[clamp(48px,9vw,112px)] font-bold leading-[1.05] tracking-[0.12em] text-slate-50">
+          千年古桥　一念即达
+        </h1>
+        <p className="mt-6 text-sm tracking-[0.3em] text-slate-300/80 md:text-base">
+          中国古桥知识图谱 · 桥知 BridgingChina
+        </p>
+        <Link href="/knowledge" className="mt-12">
+          <Button size="lg" className="focus-visible:ring-white/70 focus-visible:border-white">开始探索</Button>
+        </Link>
+      </div>
+    </section>
   );
 }
