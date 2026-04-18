@@ -7,7 +7,7 @@ import type { ReactNode } from 'react';
 describe('useConfig', () => {
   beforeEach(() => {
     vi.unstubAllEnvs();
-    vi.stubEnv('NEXT_PUBLIC_API_BASE_URL', 'http://test/api/mobile/v1');
+    vi.stubEnv('NEXT_PUBLIC_API_BASE_URL', 'http://test/v1');
   });
 
   it('fetches /config and returns data', async () => {

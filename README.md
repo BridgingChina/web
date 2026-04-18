@@ -1,6 +1,6 @@
 # 桥知 BridgingChina · Web
 
-Next.js 16 + React 19 desktop web client for the BridgingChina bridge knowledge platform. Mirrors the React Native mobile app's C-side experience (browse / search / detail / map / Q&A / flashcards) on top of the existing FastAPI mobile API.
+Next.js 16 + React 19 desktop web client for the BridgingChina bridge knowledge platform. Mirrors the React Native mobile app's C-side experience (browse / search / detail / map / Q&A / flashcards) on top of the FastAPI public API (`/v1/*`).
 
 ## Stack
 
@@ -19,7 +19,7 @@ npm install
 npm run dev          # http://localhost:3000
 ```
 
-Backend default: `http://localhost:8000/api/mobile/v1` (RAG project on the same machine). Backend CORS already allows `http://localhost:3000`.
+Backend default: `http://localhost:8000/v1` (RAG project on the same machine). Backend CORS already allows `http://localhost:3000`.
 
 ## Scripts
 
@@ -36,7 +36,7 @@ Backend default: `http://localhost:8000/api/mobile/v1` (RAG project on the same 
 ```
 src/
   app/            App Router routes (home / map / search / recognize / me + dynamic detail pages)
-  api/            apiClient + types + 8 TanStack Query hooks (ported from mobile)
+  api/            apiClient + types + 8 TanStack Query hooks (ported from legacy React Native client)
   components/     Page-specific + shared UI components
     layout/       Header
     qa/           Global QASheet (right-side Sheet) + SSE renderer
@@ -58,7 +58,7 @@ docs/plans/       Design + impl plans
 
 ## Relationship to other repos
 
-- `../RAG/` — Python FastAPI backend (the mobile API at `/api/mobile/v1/*` is the only surface this web app touches)
+- `../RAG/` — Python FastAPI backend (the public API at `/v1/*` is the only surface this web app touches)
 - `../app/` — React Native mobile app (this web app reuses its `src/api/types.ts`, `client.ts`, hooks, and stores byte-for-byte where possible)
 - `../RAG/web/` — separate admin console (not related to this C-side app)
 
@@ -71,7 +71,7 @@ GitHub Actions workflow at `.github/workflows/ci.yml` runs typecheck + lint + te
 See `docs/DEPLOY.md` and `docs/plans/2026-04-16-web-version-design.md` for the full design.
 
 Both Vercel and Cloudflare Pages are supported. Set:
-- `NEXT_PUBLIC_API_BASE_URL` — backend mobile API URL
+- `NEXT_PUBLIC_API_BASE_URL` — backend public API URL
 - `NEXT_PUBLIC_AMAP_KEY` — AMap JS API key (申请: https://lbs.amap.com/)
 - `AMAP_SECURITY_CODE` — 高德 JS 安全密钥，服务端 secret（不加 `NEXT_PUBLIC_` 前缀）；由 `/api/amap` proxy 注入。Cloudflare 用 `wrangler secret put AMAP_SECURITY_CODE`。
 
