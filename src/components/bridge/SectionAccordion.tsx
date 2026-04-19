@@ -3,16 +3,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import type { BridgeSections, Source } from '@/api/types';
 import { CitationBadges } from '@/components/knowledge/CitationBadges';
 
-const SECTION_LABELS: Record<keyof BridgeSections, string> = {
-  structure: '形制与技术',
-  geography: '地域与环境',
-  society: '功能与社会',
-  history: '历史与演变',
-};
-
 export function SectionAccordion({ sections, sources }: { sections: BridgeSections; sources: Source[] }) {
-  const keys = Object.keys(sections) as (keyof BridgeSections)[];
-  const allEmpty = keys.every(k => sections[k].l0.length === 0 && sections[k].l1.length === 0);
+  const entries = Object.entries(sections);
+  const allEmpty = entries.every(([, sec]) => sec.l0.length === 0 && sec.l1.length === 0);
 
   if (allEmpty) {
     return (
@@ -23,13 +16,12 @@ export function SectionAccordion({ sections, sources }: { sections: BridgeSectio
   }
 
   return (
-    <Accordion defaultValue={keys.filter(k => sections[k].l0.length > 0)}>
-      {keys.map(k => {
-        const sec = sections[k];
+    <Accordion defaultValue={entries.filter(([, sec]) => sec.l0.length > 0).map(([k]) => k)}>
+      {entries.map(([k, sec]) => {
         const isEmpty = sec.l0.length === 0 && sec.l1.length === 0;
         return (
           <AccordionItem key={k} value={k}>
-            <AccordionTrigger>{SECTION_LABELS[k]}</AccordionTrigger>
+            <AccordionTrigger>{k}</AccordionTrigger>
             <AccordionContent>
               {isEmpty
                 ? <p className="text-sm text-muted-foreground">该章节内容待补充</p>

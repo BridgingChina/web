@@ -147,12 +147,12 @@ export interface SectionContent {
   citations?: Citation[];
 }
 
-export interface BridgeSections {
-  structure: { l0: SectionContent[]; l1: SectionContent[] };
-  geography: { l0: SectionContent[]; l1: SectionContent[] };
-  society: { l0: SectionContent[]; l1: SectionContent[] };
-  history: { l0: SectionContent[]; l1: SectionContent[] };
+export interface BridgeSectionLevel {
+  l0: SectionContent[];
+  l1: SectionContent[];
 }
+
+export type BridgeSections = Record<string, BridgeSectionLevel>;
 
 export interface BridgeDetail {
   id: string;
