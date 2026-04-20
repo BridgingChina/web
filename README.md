@@ -7,8 +7,10 @@ Next.js 16 + React 19 desktop web client for the BridgingChina bridge knowledge 
 - Next.js 16 (App Router) + React 19 + TypeScript
 - Tailwind CSS v4 + shadcn/ui (Base UI primitives)
 - TanStack Query 5 + Zustand 5
+- next-intl 4 (locale URL prefix, `zh-CN` / `en-US`, cookie detection)
+- Better Auth client (cookie session → Bearer JWT for `/favorites|/review|/history`)
 - AMap JS API 2.0 (`@amap/amap-jsapi-loader`)
-- vitest 4 + @testing-library/react
+- vitest 4 + @testing-library/react + Playwright (E2E)
 
 ## Develop
 
@@ -30,30 +32,42 @@ Backend default: `http://localhost:8000/v1` (RAG project on the same machine). B
 - `npm run typecheck` — `tsc --noEmit`
 - `npm run test` — vitest watch
 - `npm run test:run` — vitest single run
+- `npm run test:e2e` — Playwright E2E (auth-flow smoke)
 
 ## Project layout
 
 ```
+middleware.ts     Root Next.js middleware — composes next-intl locale routing
+                  with the Better Auth `/me` guard (see src/lib/auth-middleware.ts
+                  for the pure helpers that are unit-tested separately).
 src/
-  app/            App Router routes (home / map / search / recognize / me + dynamic detail pages)
-  api/            apiClient + types + 8 TanStack Query hooks (ported from legacy React Native client)
-  components/     Page-specific + shared UI components
-    layout/       Header
-    qa/           Global QASheet (right-side Sheet) + SSE renderer
-    knowledge/    KP detail blocks + L2 tabs + citations + tree
-    bridge/       Hero carousel + section accordion
-    map/          AMap container + filters + drawer + attribution
-    recognize/    Upload zone + candidate list
-    flashcard/    Flip card + review session + summary
-    me/           Today review + favorites/history/settings panels
-    feedback/     ErrorBoundary + ErrorState + EmptyState
-    common/       FavoriteButton + RecordHistoryOnMount
-    ui/           shadcn/ui primitives
-  lib/            sse-client (POST + ReadableStream) + amap-loader (singleton) + device-id (localStorage) + utils (cn)
-  stores/         deviceStore / qaStore / filterStore (Zustand)
-  providers/      QueryProvider / ConfigProvider
+  app/
+    [locale]/     All user-facing routes live under /<locale>/* (zh-CN | en-US).
+                  Pages: home / map / search / recognize / knowledge / flashcards
+                  / bridges / me. layout.tsx mounts NextIntlClientProvider +
+                  QueryProvider + ConfigProvider + Header + QASheet.
+    api/          Edge route handlers (AMap proxy).
+  api/            apiClient + types + TanStack Query hooks. Bearer JWT is
+                  auto-attached for /favorites|/review|/history via
+                  ensureFreshJwt(); Accept-Language reads NEXT_LOCALE cookie.
+  components/     Page-specific + shared UI
+    LanguageSwitcher.tsx  Cookie + router.replace language toggle (Phase 1).
+    layout/ qa/ knowledge/ bridge/ map/ recognize/ flashcard/ me/ feedback/
+    common/ (FavoriteButton, RecordHistoryOnMount) · ui/ (shadcn primitives)
+  i18n/           routing.ts (defineRouting) · navigation.ts (Link/useRouter
+                  wrappers) · request.ts (server getRequestConfig) ·
+                  glossary.yaml (bilingual terminology, synced from umbrella
+                  docs/glossary.zh-en.yaml via scripts/sync-glossary.sh)
+  messages/       zh-CN.json · en-US.json — UI strings
+  lib/            auth-client (Better Auth) · auth-middleware (pure cookie/URL
+                  helpers) · jwt-refresh · sse-client · amap-loader · glossary
+                  (server-side YAML loader; do NOT import from client components)
+                  · utils (cn)
+  stores/         authStore · deviceStore · qaStore · filterStore (Zustand)
+  providers/      QueryProvider · ConfigProvider
   constants/      config (env-driven)
-docs/plans/       Design + impl plans
+docs/plans/       Design + impl plans (i18n Phase 1, unified auth Phase 4, …)
+e2e/              Playwright E2E specs
 ```
 
 ## Relationship to other repos
@@ -80,5 +94,19 @@ Then add the deployed origin to the backend's `CORS_ORIGINS` env var.
 ## Conventions
 
 - All commits use Conventional Commits (`feat:` / `fix:` / `chore:` / `test:` / `docs:`)
-- TDD for non-UI logic (api/client, lib/sse-client, stores, lib/device-id, constants)
-- UI components manually verified via dev server; playwright E2E is on the roadmap
+- TDD for non-UI logic (api/client, lib/sse-client, stores, constants, lib/auth-middleware, lib/jwt-refresh, lib/glossary)
+- UI components manually verified via dev server; Playwright E2E covers the login → `/me` guard flow
+
+## i18n (Phase 1)
+
+- Locale detection chain: URL prefix (`/zh-CN/*` / `/en-US/*`) → `NEXT_LOCALE` cookie → `Accept-Language` header → default `zh-CN`.
+- `<LanguageSwitcher />` writes the cookie and `router.replace(pathname, { locale })`; DB sync to the auth Worker (`preferred_locale`) is deferred to Phase 4.
+- Server components: `useTranslations()` / `getTranslations()` from `next-intl`.
+- API calls: `Accept-Language` is derived from the cookie inside `src/api/client.ts` — no need to thread locale from components. Server-side callers can pass `options.locale` explicitly.
+- Bilingual glossary at `src/i18n/glossary.yaml` is the LLM-prompt term source; sync from umbrella `docs/glossary.zh-en.yaml` with `scripts/sync-glossary.sh --worktree <branch>`. Never `import '@/lib/glossary'` from a client component (bundles js-yaml).
+
+## Auth (Phase 4)
+
+- Root `middleware.ts` protects `/me` (locale-prefixed too). Unauthenticated requests 302 → `${NEXT_PUBLIC_AUTH_URL}/auth/login?callbackURL=…`.
+- C-end API endpoints listed in `AUTHED_ENDPOINTS` (`/favorites`, `/review`, `/history`) auto-attach `Authorization: Bearer <jwt>` via `ensureFreshJwt()`. New authed endpoints go in that list.
+- `/me` page renders a `LoginPrompt` when `useSession()` returns null — middleware covers direct URL access, this covers SPA navigation.
