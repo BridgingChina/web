@@ -13,6 +13,18 @@ function needsDeviceId(path: string): boolean {
   return DEVICE_ID_ENDPOINTS.some((ep) => path.startsWith(ep));
 }
 
+// Read NEXT_LOCALE cookie on client runtime. Returns null if not running in a
+// browser or the cookie is absent. Server runtime (RSC / Server Actions) should
+// pass `locale` explicitly via request options — this fallback exists so legacy
+// client callsites don't regress when deviceStore.language is retired.
+function readLocaleCookie(): string | null {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.match(/(?:^|; )NEXT_LOCALE=([^;]+)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+const DEFAULT_LOCALE = 'zh-CN';
+
 export class ApiClientError extends Error {
   code: string;
   status: number;
@@ -35,9 +47,10 @@ async function request<T>(
     params?: Record<string, string | number | undefined>;
     headers?: Record<string, string>;
     timeout?: number;
+    locale?: string;
   } = {},
 ): Promise<T> {
-  const { deviceId, language } = useDeviceStore.getState();
+  const { deviceId } = useDeviceStore.getState();
   const url = new URL(`${getApiBaseUrl()}${path}`);
   if (options.params) {
     Object.entries(options.params).forEach(([k, v]) => {
@@ -45,7 +58,7 @@ async function request<T>(
     });
   }
   const headers: Record<string, string> = {
-    'Accept-Language': language,
+    'Accept-Language': options.locale ?? readLocaleCookie() ?? DEFAULT_LOCALE,
     ...options.headers,
   };
   if (needsDeviceId(path) && deviceId) headers['X-Device-Id'] = deviceId;

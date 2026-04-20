@@ -1,6 +1,15 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { apiClient, ApiClientError } from '../client';
 import { useDeviceStore } from '@/stores/deviceStore';
+
+// Helper: since this module is unit-tested in a jsdom env, `document` exists
+// and we can seed/clear `document.cookie` between cases.
+function setCookie(name: string, value: string) {
+  document.cookie = `${name}=${encodeURIComponent(value)}; path=/`;
+}
+function clearCookie(name: string) {
+  document.cookie = `${name}=; path=/; max-age=0`;
+}
 
 describe('apiClient', () => {
   beforeEach(() => {
@@ -8,6 +17,11 @@ describe('apiClient', () => {
     vi.unstubAllGlobals();
     vi.stubEnv('NEXT_PUBLIC_API_BASE_URL', 'http://test/v1');
     useDeviceStore.setState({ deviceId: 'dev-uuid', language: 'zh-CN' });
+    clearCookie('NEXT_LOCALE');
+  });
+
+  afterEach(() => {
+    clearCookie('NEXT_LOCALE');
   });
 
   it('attaches X-Device-Id only on /favorites, /review, /history', async () => {
@@ -29,7 +43,34 @@ describe('apiClient', () => {
     expect(headersAt(3)['X-Device-Id']).toBe('dev-uuid');
   });
 
-  it('attaches Accept-Language from store', async () => {
+  it('reads Accept-Language from NEXT_LOCALE cookie', async () => {
+    setCookie('NEXT_LOCALE', 'en-US');
+    let captured: RequestInit | null = null;
+    vi.stubGlobal('fetch', vi.fn(async (_url: string, init: RequestInit) => {
+      captured = init;
+      return new Response('{"data":{}}', { status: 200 });
+    }));
+
+    await apiClient.get('/bridges');
+    expect((captured!.headers as Record<string, string>)['Accept-Language']).toBe('en-US');
+  });
+
+  it('falls back to zh-CN when NEXT_LOCALE cookie is absent', async () => {
+    // cookie cleared by beforeEach
+    let captured: RequestInit | null = null;
+    vi.stubGlobal('fetch', vi.fn(async (_url: string, init: RequestInit) => {
+      captured = init;
+      return new Response('{"data":{}}', { status: 200 });
+    }));
+
+    await apiClient.get('/bridges');
+    expect((captured!.headers as Record<string, string>)['Accept-Language']).toBe('zh-CN');
+  });
+
+  it('does NOT read deviceStore.language for Accept-Language', async () => {
+    // Even if deviceStore.language says 'en', without cookie we fallback to
+    // zh-CN — store no longer drives this header.
+    useDeviceStore.setState({ deviceId: 'dev-uuid', language: 'en' });
     let captured: RequestInit | null = null;
     vi.stubGlobal('fetch', vi.fn(async (_url: string, init: RequestInit) => {
       captured = init;
