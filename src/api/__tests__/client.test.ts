@@ -1,16 +1,27 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { apiClient, ApiClientError } from '../client';
 import { useDeviceStore } from '@/stores/deviceStore';
+import { useAuthStore } from '@/stores/authStore';
+
+function fakeJwt(exp: number): string {
+  const enc = (obj: object) =>
+    btoa(JSON.stringify(obj)).replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_');
+  return `${enc({ alg: 'EdDSA' })}.${enc({ exp })}.sig`;
+}
 
 describe('apiClient', () => {
   beforeEach(() => {
     vi.unstubAllEnvs();
     vi.unstubAllGlobals();
     vi.stubEnv('NEXT_PUBLIC_API_BASE_URL', 'http://test/v1');
-    useDeviceStore.setState({ deviceId: 'dev-uuid', language: 'zh-CN' });
+    useDeviceStore.setState({ deviceId: '', language: 'zh-CN' });
+    useAuthStore.getState().clear();
   });
 
-  it('attaches X-Device-Id only on /favorites, /review, /history', async () => {
+  it('attaches Authorization Bearer only on /favorites, /review, /history', async () => {
+    const futureExp = Math.floor(Date.now() / 1000) + 600;
+    useAuthStore.getState().setJwt(fakeJwt(futureExp), futureExp);
+
     const captured: { url: string; init: RequestInit }[] = [];
     vi.stubGlobal('fetch', vi.fn(async (url: string, init: RequestInit) => {
       captured.push({ url, init });
@@ -23,10 +34,36 @@ describe('apiClient', () => {
     await apiClient.get('/history');
 
     const headersAt = (i: number) => captured[i].init.headers as Record<string, string>;
-    expect(headersAt(0)['X-Device-Id']).toBeUndefined();
-    expect(headersAt(1)['X-Device-Id']).toBe('dev-uuid');
-    expect(headersAt(2)['X-Device-Id']).toBe('dev-uuid');
-    expect(headersAt(3)['X-Device-Id']).toBe('dev-uuid');
+    expect(headersAt(0)['Authorization']).toBeUndefined();
+    expect(headersAt(1)['Authorization']).toMatch(/^Bearer /);
+    expect(headersAt(2)['Authorization']).toMatch(/^Bearer /);
+    expect(headersAt(3)['Authorization']).toMatch(/^Bearer /);
+  });
+
+  it('never attaches X-Device-Id (legacy header removed)', async () => {
+    const futureExp = Math.floor(Date.now() / 1000) + 600;
+    useAuthStore.getState().setJwt(fakeJwt(futureExp), futureExp);
+
+    let captured: RequestInit | null = null;
+    vi.stubGlobal('fetch', vi.fn(async (_url: string, init: RequestInit) => {
+      captured = init;
+      return new Response('{"data":{}}', { status: 200 });
+    }));
+
+    await apiClient.get('/favorites');
+    expect((captured!.headers as Record<string, string>)['X-Device-Id']).toBeUndefined();
+  });
+
+  it('throws UNAUTHENTICATED 401 when authed endpoint called without jwt', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => new Response(JSON.stringify({ token: null }), { status: 401 })),
+    );
+
+    await expect(apiClient.get('/favorites')).rejects.toMatchObject({
+      status: 401,
+      code: 'UNAUTHENTICATED',
+    });
   });
 
   it('attaches Accept-Language from store', async () => {
@@ -41,6 +78,9 @@ describe('apiClient', () => {
   });
 
   it('serializes JSON body and sets Content-Type', async () => {
+    const futureExp = Math.floor(Date.now() / 1000) + 600;
+    useAuthStore.getState().setJwt(fakeJwt(futureExp), futureExp);
+
     let captured: RequestInit | null = null;
     vi.stubGlobal('fetch', vi.fn(async (_url: string, init: RequestInit) => {
       captured = init;
@@ -80,6 +120,9 @@ describe('apiClient', () => {
   });
 
   it('returns undefined for 204 No Content', async () => {
+    const futureExp = Math.floor(Date.now() / 1000) + 600;
+    useAuthStore.getState().setJwt(fakeJwt(futureExp), futureExp);
+
     vi.stubGlobal('fetch', vi.fn(async () => new Response(null, { status: 204 })));
     const result = await apiClient.delete('/favorites/x');
     expect(result).toBeUndefined();
