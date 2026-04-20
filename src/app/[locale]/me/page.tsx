@@ -1,4 +1,5 @@
 'use client';
+import { useTranslations } from 'next-intl';
 import { useSession } from '@/lib/auth-client';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -7,6 +8,7 @@ import { TodayReviewCard } from '@/components/me/TodayReviewCard';
 import { FavoritesList } from '@/components/me/FavoritesList';
 import { HistoryList } from '@/components/me/HistoryList';
 import { SettingsPanel } from '@/components/me/SettingsPanel';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 const AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL ?? 'https://auth.bridgingchina.net';
 
@@ -40,6 +42,7 @@ function LoginPrompt() {
 }
 
 export default function MePage() {
+  const t = useTranslations('common');
   const { data: session, isPending } = useSession();
   if (isPending) return <MeSkeleton />;
   if (!session) {
@@ -68,6 +71,13 @@ export default function MePage() {
         <TabsContent value="history" className="pt-4"><HistoryList /></TabsContent>
         <TabsContent value="settings" className="pt-4"><SettingsPanel /></TabsContent>
       </Tabs>
+      <section className="mt-8 border-t pt-6">
+        <h2 className="text-lg font-medium mb-3">{t('settings')}</h2>
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-muted-foreground">Language / 语言</span>
+          <LanguageSwitcher />
+        </div>
+      </section>
     </div>
   );
 }

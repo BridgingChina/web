@@ -1,0 +1,189 @@
+version: 1
+generated_at: 2026-04-20
+updated_at: 2026-04-20
+# 术语源：AI 翻译 prompt 会按 top-K 相关项注入这个表作为 few-shot reference
+# 新增术语走 PR，不要在其他地方散落
+# 顶层 docs/glossary.zh-en.yaml 是单一真相源，scripts/sync-glossary.sh 分发到各子仓
+terms:
+  # ───── UI 高频动作（ui_action）─────
+  - zh: 收藏
+    en: Favorite
+    context: ui_action
+    notes: "动词/按钮统一大写首字母"
+  - zh: 复习
+    en: Review
+    context: ui_action
+  - zh: 浏览历史
+    en: History
+    context: ui_action
+  - zh: 登录
+    en: Sign in
+    context: ui_action
+  - zh: 注册
+    en: Sign up
+    context: ui_action
+  - zh: 退出登录
+    en: Sign out
+    context: ui_action
+  - zh: 设置
+    en: Settings
+    context: ui_action
+  - zh: 保存
+    en: Save
+    context: ui_action
+  - zh: 取消
+    en: Cancel
+    context: ui_action
+  - zh: 确认
+    en: Confirm
+    context: ui_action
+  - zh: 删除
+    en: Delete
+    context: ui_action
+  - zh: 编辑
+    en: Edit
+    context: ui_action
+  - zh: 搜索
+    en: Search
+    context: ui_action
+  - zh: 重试
+    en: Retry
+    context: ui_action
+  # ───── 桥梁结构术语（structural）─────
+  - zh: 桥梁
+    en: bridge
+    context: general
+  - zh: 桥墩
+    en: pier
+    context: structural
+  - zh: 桥台
+    en: abutment
+    context: structural
+  - zh: 拱
+    en: arch
+    context: structural
+  - zh: 券拱
+    en: voussoir arch
+    context: structural
+    notes: "古代石拱桥的拱石单元，不译作 arch 单独一词"
+  - zh: 拱肩
+    en: spandrel
+    context: structural
+  - zh: 开腹式拱
+    en: open-spandrel arch
+    context: structural
+    notes: "例：赵州桥是开腹式拱桥"
+  - zh: 桁架
+    en: truss
+    context: structural
+  - zh: 主梁
+    en: main girder
+    context: structural
+  - zh: 桥面
+    en: deck
+    context: structural
+  - zh: 雁翅
+    en: wing wall
+    context: structural
+  # ───── 桥型（bridge_type）─────
+  - zh: 悬索桥
+    en: suspension bridge
+    context: bridge_type
+  - zh: 斜拉桥
+    en: cable-stayed bridge
+    context: bridge_type
+  - zh: 梁桥
+    en: beam bridge
+    context: bridge_type
+  - zh: 拱桥
+    en: arch bridge
+    context: bridge_type
+  - zh: 廊桥
+    en: covered bridge
+    context: bridge_type
+  - zh: 风雨桥
+    en: wind-and-rain bridge
+    context: bridge_type
+    notes: "侗族传统廊桥，保留 wind-and-rain 直译"
+  - zh: 石拱桥
+    en: stone arch bridge
+    context: bridge_type
+  - zh: 木拱桥
+    en: wooden arch bridge
+    context: bridge_type
+  # ───── 构造细部（traditional_construction）─────
+  - zh: 榫卯
+    en: mortise and tenon
+    context: traditional_construction
+  - zh: 斗拱
+    en: dougong bracket system
+    context: traditional_construction
+    notes: "保留 dougong 音译 + bracket system 意译"
+  - zh: 飞檐
+    en: upturned eaves
+    context: traditional_construction
+  # ───── 材料（material）─────
+  - zh: 石
+    en: stone
+    context: material
+  - zh: 木
+    en: wood
+    context: material
+  - zh: 混凝土
+    en: concrete
+    context: material
+  - zh: 钢
+    en: steel
+    context: material
+  - zh: 铁
+    en: iron
+    context: material
+  # ───── 年代（era，与 facets.yaml 对齐）─────
+  - zh: 先秦
+    en: Pre-Qin
+    context: era
+  - zh: 秦汉
+    en: Qin-Han
+    context: era
+  - zh: 隋唐
+    en: Sui-Tang
+    context: era
+  - zh: 宋元
+    en: Song-Yuan
+    context: era
+  - zh: 明清
+    en: Ming-Qing
+    context: era
+  - zh: 近现代
+    en: Modern
+    context: era
+  # ───── taxonomy lvl1（四大主线）─────
+  - zh: 形制与技术
+    en: Form and Technology
+    context: taxonomy_lvl1
+  - zh: 地域与环境
+    en: Region and Environment
+    context: taxonomy_lvl1
+  - zh: 功能与社会
+    en: Function and Society
+    context: taxonomy_lvl1
+  - zh: 历史与演变
+    en: History and Evolution
+    context: taxonomy_lvl1
+  # ───── UI 状态（ui_state）─────
+  - zh: 加载中
+    en: Loading…
+    context: ui_state
+  - zh: 没有更多结果
+    en: No more results
+    context: ui_state
+  - zh: 出错了
+    en: Something went wrong
+    context: ui_state
+  - zh: 正在翻译
+    en: Translating…
+    context: ui_state
+    notes: "DB 字段 fallback 中文时的前端提示"
+  - zh: 暂无数据
+    en: No data
+    context: ui_state

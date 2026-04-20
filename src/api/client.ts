@@ -1,5 +1,4 @@
 import { API_BASE_URL, API_TIMEOUT } from '@/constants/config';
-import { useDeviceStore } from '@/stores/deviceStore';
 import { useAuthStore } from '@/stores/authStore';
 import { ensureFreshJwt } from '@/lib/jwt-refresh';
 import type { ApiError } from './types';
@@ -13,6 +12,19 @@ const AUTHED_ENDPOINTS = ['/favorites', '/review', '/history'];
 function needsAuth(path: string): boolean {
   return AUTHED_ENDPOINTS.some((ep) => path.startsWith(ep));
 }
+
+// Read NEXT_LOCALE cookie on client runtime. Returns null if not running in a
+// browser or the cookie is absent. Server runtime (RSC / Server Actions) should
+// pass `locale` explicitly via request options — this fallback exists so legacy
+// client callsites don't regress after Phase 1 dropped deviceStore.language as
+// the Accept-Language source.
+function readLocaleCookie(): string | null {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.match(/(?:^|; )NEXT_LOCALE=([^;]+)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+const DEFAULT_LOCALE = 'zh-CN';
 
 export class ApiClientError extends Error {
   code: string;
@@ -36,9 +48,9 @@ async function request<T>(
     params?: Record<string, string | number | undefined>;
     headers?: Record<string, string>;
     timeout?: number;
+    locale?: string;
   } = {},
 ): Promise<T> {
-  const { language } = useDeviceStore.getState();
   const url = new URL(`${getApiBaseUrl()}${path}`);
   if (options.params) {
     Object.entries(options.params).forEach(([k, v]) => {
@@ -46,7 +58,7 @@ async function request<T>(
     });
   }
   const headers: Record<string, string> = {
-    'Accept-Language': language,
+    'Accept-Language': options.locale ?? readLocaleCookie() ?? DEFAULT_LOCALE,
     ...options.headers,
   };
   if (needsAuth(path)) {

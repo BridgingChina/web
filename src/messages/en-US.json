@@ -1,0 +1,26 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "favorite": "Favorite",
+    "review": "Review",
+    "history": "History",
+    "sign_in": "Sign in",
+    "sign_up": "Sign up",
+    "sign_out": "Sign out",
+    "settings": "Settings",
+    "no_results": "No results",
+    "search": "Search"
+  },
+  "nav": {
+    "home": "Home",
+    "bridges": "Bridges",
+    "knowledge": "Knowledge",
+    "map": "Map",
+    "me": "Me"
+  }
+}

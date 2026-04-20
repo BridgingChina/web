@@ -1,5 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { SESSION_COOKIE_RE, hasSessionCookie, buildLoginUrl } from '../middleware';
+// NOTE: we import the pure helpers from `@/lib/auth-middleware` rather than
+// from the root `middleware.ts` — the latter now transitively loads
+// `next-intl/middleware` → `next/server`, which vitest cannot resolve outside
+// the Next runtime. The root middleware re-exports these same symbols.
+import {
+  SESSION_COOKIE_RE,
+  hasSessionCookie,
+  buildLoginUrl,
+} from '@/lib/auth-middleware';
 
 describe('SESSION_COOKIE_RE', () => {
   it.each([
