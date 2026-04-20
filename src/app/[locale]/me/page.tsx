@@ -28,21 +28,21 @@ function MeSkeleton() {
 }
 
 function LoginPrompt() {
+  const t = useTranslations('me');
   return (
     <div className="mx-auto max-w-md space-y-4 rounded-lg border p-8 text-center">
-      <h2 className="text-lg font-semibold">需要登录</h2>
-      <p className="text-sm text-muted-foreground">
-        登录后可同步收藏、复习进度与浏览历史。
-      </p>
+      <h2 className="text-lg font-semibold">{t('login_required_title')}</h2>
+      <p className="text-sm text-muted-foreground">{t('login_required_description')}</p>
       <a className={buttonVariants({ variant: 'default' })} href={buildLoginHref()}>
-        前往登录
+        {t('go_sign_in')}
       </a>
     </div>
   );
 }
 
 export default function MePage() {
-  const t = useTranslations('common');
+  const tCommon = useTranslations('common');
+  const tMe = useTranslations('me');
   const { data: session, isPending } = useSession();
   if (isPending) return <MeSkeleton />;
   if (!session) {
@@ -57,24 +57,24 @@ export default function MePage() {
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">我的</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{tMe('title')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{greeting}</p>
       </div>
       <TodayReviewCard />
       <Tabs defaultValue="favorites">
         <TabsList>
-          <TabsTrigger value="favorites">收藏</TabsTrigger>
-          <TabsTrigger value="history">浏览历史</TabsTrigger>
-          <TabsTrigger value="settings">设置</TabsTrigger>
+          <TabsTrigger value="favorites">{tMe('tabs.favorites')}</TabsTrigger>
+          <TabsTrigger value="history">{tMe('tabs.history')}</TabsTrigger>
+          <TabsTrigger value="settings">{tMe('tabs.settings')}</TabsTrigger>
         </TabsList>
         <TabsContent value="favorites" className="pt-4"><FavoritesList /></TabsContent>
         <TabsContent value="history" className="pt-4"><HistoryList /></TabsContent>
         <TabsContent value="settings" className="pt-4"><SettingsPanel /></TabsContent>
       </Tabs>
       <section className="mt-8 border-t pt-6">
-        <h2 className="text-lg font-medium mb-3">{t('settings')}</h2>
+        <h2 className="text-lg font-medium mb-3">{tCommon('settings')}</h2>
         <div className="flex items-center gap-4">
-          <span className="text-sm text-muted-foreground">Language / 语言</span>
+          <span className="text-sm text-muted-foreground">{tCommon('language_label')}</span>
           <LanguageSwitcher />
         </div>
       </section>

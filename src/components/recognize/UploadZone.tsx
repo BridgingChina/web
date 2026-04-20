@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef, ChangeEvent, DragEvent } from 'react';
+import { useTranslations } from 'next-intl';
 import { Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -15,16 +16,17 @@ export function UploadZone({ onSelect, disabled }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const t = useTranslations('recognize');
 
   function handleFile(file: File | undefined) {
     setError(null);
     if (!file) return;
     if (!ACCEPTED.includes(file.type)) {
-      setError('仅支持 JPEG / PNG 图片');
+      setError(t('error_wrong_type'));
       return;
     }
     if (file.size > MAX_BYTES) {
-      setError('图片不能超过 5MB');
+      setError(t('error_too_large'));
       return;
     }
     onSelect(file);
@@ -54,8 +56,8 @@ export function UploadZone({ onSelect, disabled }: Props) {
         )}
       >
         <Upload className="h-8 w-8 text-muted-foreground" />
-        <p className="text-sm font-medium">拖拽图片到此处，或点击选择文件</p>
-        <p className="text-xs text-muted-foreground">JPEG / PNG · 最大 5MB</p>
+        <p className="text-sm font-medium">{t('drop_hint')}</p>
+        <p className="text-xs text-muted-foreground">{t('file_spec')}</p>
         <input
           ref={inputRef}
           type="file"

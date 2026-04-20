@@ -3,7 +3,8 @@ import { useFavoriteCheck, useAddFavorite, useRemoveFavorite } from '@/api/hooks
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
 import { useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { useSession } from '@/lib/auth-client';
 
 interface Props {
@@ -19,6 +20,7 @@ export function FavoriteButton({ targetType, targetId }: Props) {
   const { data: results } = useFavoriteCheck(targets);
   const add = useAddFavorite();
   const remove = useRemoveFavorite();
+  const t = useTranslations('common');
 
   const entry = results?.[targetId];
   const favorited = !!entry?.favorited;
@@ -38,7 +40,7 @@ export function FavoriteButton({ targetType, targetId }: Props) {
   return (
     <Button variant={favorited ? 'default' : 'outline'} size="sm" onClick={toggle} disabled={pending}>
       <Heart className={`mr-1.5 h-4 w-4 ${favorited ? 'fill-current' : ''}`} />
-      {favorited ? '已收藏' : '收藏'}
+      {favorited ? t('favorite_active') : t('favorite')}
     </Button>
   );
 }

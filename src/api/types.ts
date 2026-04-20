@@ -230,6 +230,8 @@ export interface QASourcesEvent { sources: Source[]; }
 export interface QAErrorEvent {
   code: string;
   message: string;
+  /** Optional HTTP status passed through from the transport layer (SSE client). */
+  status?: number;
   fallback_actions: { type: string; label: string; id?: string; ids?: string[] }[];
 }
 

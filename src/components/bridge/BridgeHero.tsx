@@ -1,12 +1,15 @@
 'use client';
+import { useTranslations } from 'next-intl';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import type { BridgeImage } from '@/api/types';
 
 export function BridgeHero({ images, name, bridgeType }: { images: BridgeImage[]; name: string; bridgeType: string }) {
+  const t = useTranslations('bridge_detail');
+
   if (!images || images.length === 0) {
     return (
       <div className="flex aspect-[16/7] items-center justify-center rounded-md bg-muted text-muted-foreground">
-        <p className="text-sm">暂无图片（{bridgeType}）</p>
+        <p className="text-sm">{t('no_image', { bridgeType })}</p>
       </div>
     );
   }

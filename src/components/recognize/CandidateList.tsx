@@ -1,5 +1,6 @@
 'use client';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -8,20 +9,24 @@ import type { RecognitionResponse } from '@/api/types';
 interface Props { result: RecognitionResponse; onReset: () => void; }
 
 export function CandidateList({ result, onReset }: Props) {
+  const t = useTranslations('recognize');
+
   if (result.candidates.length === 0) {
     const fb = result.fallback_suggestions;
+    const searchSuffix = fb?.search_hint ? t('parenthetical', { hint: fb.search_hint }) : '';
+    const regionSuffix = fb?.region_hint ? t('parenthetical', { hint: fb.region_hint }) : '';
     return (
       <div className="space-y-4 rounded-md border bg-muted/20 p-6 text-center">
-        <p className="text-sm font-medium">未能识别这张图片</p>
-        <p className="text-xs text-muted-foreground">试试以下兜底入口：</p>
+        <p className="text-sm font-medium">{t('no_match_title')}</p>
+        <p className="text-xs text-muted-foreground">{t('fallback_intro')}</p>
         <div className="flex flex-wrap justify-center gap-2">
           <Link href={`/search?q=${encodeURIComponent(fb?.search_hint ?? '')}`}>
-            <Button size="sm" variant="outline">去搜索{fb?.search_hint ? `（${fb.search_hint}）` : ''}</Button>
+            <Button size="sm" variant="outline">{t('go_search')}{searchSuffix}</Button>
           </Link>
           <Link href={`/map${fb?.region_hint ? `?region=${encodeURIComponent(fb.region_hint)}` : ''}`}>
-            <Button size="sm" variant="outline">去地图{fb?.region_hint ? `（${fb.region_hint}）` : ''}筛选</Button>
+            <Button size="sm" variant="outline">{t('go_map')}{regionSuffix}{t('go_map_suffix')}</Button>
           </Link>
-          <Button size="sm" variant="ghost" onClick={onReset}>重新上传</Button>
+          <Button size="sm" variant="ghost" onClick={onReset}>{t('reupload')}</Button>
         </div>
       </div>
     );
@@ -30,8 +35,8 @@ export function CandidateList({ result, onReset }: Props) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium">候选桥梁（{result.candidates.length}）</h2>
-        <Button size="sm" variant="ghost" onClick={onReset}>重新上传</Button>
+        <h2 className="text-sm font-medium">{t('candidates_title', { count: result.candidates.length })}</h2>
+        <Button size="sm" variant="ghost" onClick={onReset}>{t('reupload')}</Button>
       </div>
       {result.candidates.map((c) => (
         <Link key={c.bridge_id} href={`/bridges/${c.bridge_id}`}

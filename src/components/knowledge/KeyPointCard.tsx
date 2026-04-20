@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { KeyPoint } from '@/api/types';
@@ -8,6 +9,7 @@ import { CitationBadges } from './CitationBadges';
 export function KeyPointCard({ kp }: { kp: KeyPoint }) {
   const [open, setOpen] = useState(false);
   const hasL1 = !!kp.explanation;
+  const t = useTranslations('knowledge');
 
   return (
     <article className="rounded-md border bg-card">
@@ -35,9 +37,9 @@ export function KeyPointCard({ kp }: { kp: KeyPoint }) {
           )}
           {kp.related_terms && kp.related_terms.length > 0 && (
             <div className="flex flex-wrap gap-1.5 pt-1">
-              <span className="text-xs">相关术语：</span>
-              {kp.related_terms.map(t => (
-                <Badge key={t.id} variant="outline" className="text-xs">{t.name}</Badge>
+              <span className="text-xs">{t('related_terms_label')}</span>
+              {kp.related_terms.map(term => (
+                <Badge key={term.id} variant="outline" className="text-xs">{term.name}</Badge>
               ))}
             </div>
           )}

@@ -1,14 +1,17 @@
 'use client';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { useQAStore } from '@/stores/qaStore';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
 
 export function QAResult() {
   const { status, outline, details, deepDive, sources, error } = useQAStore();
   const router = useRouter();
+  const t = useTranslations('qa');
+  const tErrors = useTranslations('errors');
 
   if (status === 'idle') return null;
 
@@ -23,9 +26,18 @@ export function QAResult() {
   }
 
   if (error) {
+    // After Phase 2 Path A, `error.code` is the translation key. Fall back to
+    // `UNKNOWN` if the code isn't mapped. HTTP_ERROR receives the captured
+    // status via the `status` field emitted by sse-client.
+    let errorText: string;
+    try {
+      errorText = tErrors(error.code, { status: error.status ?? 0 });
+    } catch {
+      errorText = tErrors('UNKNOWN');
+    }
     return (
       <div className="space-y-3 rounded-md border border-amber-300 bg-amber-50 p-3 text-sm">
-        <p className="font-medium text-amber-900">{error.message}</p>
+        <p className="font-medium text-amber-900">{errorText}</p>
         {error.fallback_actions?.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {error.fallback_actions.map((a, i) => (
@@ -52,7 +64,7 @@ export function QAResult() {
     <div className="space-y-6">
       {outline && outline.key_points.length > 0 && (
         <section className="space-y-3">
-          <h3 className="text-sm font-medium text-muted-foreground">要点</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">{t('outline_label')}</h3>
           <ol className="space-y-3">
             {outline.key_points.map((kp) => {
               const detail = details[kp.id];
@@ -89,9 +101,9 @@ export function QAResult() {
         <section>
           <Tabs defaultValue="comparisons">
             <TabsList>
-              {deepDive.comparisons?.length > 0 && <TabsTrigger value="comparisons">对比</TabsTrigger>}
-              {deepDive.controversies?.length > 0 && <TabsTrigger value="controversies">争议</TabsTrigger>}
-              {deepDive.further_reading?.length > 0 && <TabsTrigger value="reading">延伸阅读</TabsTrigger>}
+              {deepDive.comparisons?.length > 0 && <TabsTrigger value="comparisons">{t('tabs.comparisons')}</TabsTrigger>}
+              {deepDive.controversies?.length > 0 && <TabsTrigger value="controversies">{t('tabs.controversies')}</TabsTrigger>}
+              {deepDive.further_reading?.length > 0 && <TabsTrigger value="reading">{t('tabs.further_reading')}</TabsTrigger>}
             </TabsList>
             {deepDive.comparisons?.length > 0 && (
               <TabsContent value="comparisons" className="space-y-2 pt-2">
@@ -126,7 +138,7 @@ export function QAResult() {
 
       {sources && sources.sources.length > 0 && (
         <section>
-          <h3 className="mb-2 text-sm font-medium text-muted-foreground">来源</h3>
+          <h3 className="mb-2 text-sm font-medium text-muted-foreground">{t('sources_label')}</h3>
           <ol className="space-y-2 text-xs text-muted-foreground">
             {sources.sources.map((s, i) => (
               <li key={s.id}>

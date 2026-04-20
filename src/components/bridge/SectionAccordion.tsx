@@ -1,4 +1,5 @@
 'use client';
+import { useTranslations } from 'next-intl';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import type { BridgeSections, Source } from '@/api/types';
 import { CitationBadges } from '@/components/knowledge/CitationBadges';
@@ -6,11 +7,12 @@ import { CitationBadges } from '@/components/knowledge/CitationBadges';
 export function SectionAccordion({ sections, sources }: { sections: BridgeSections; sources: Source[] }) {
   const entries = Object.entries(sections);
   const allEmpty = entries.every(([, sec]) => sec.l0.length === 0 && sec.l1.length === 0);
+  const t = useTranslations('bridge_detail');
 
   if (allEmpty) {
     return (
       <div className="rounded-md border bg-muted/30 p-4 text-sm text-muted-foreground">
-        本桥详细内容待补充，可先查看右侧的关联知识点。
+        {t('section_placeholder')}
       </div>
     );
   }
@@ -24,7 +26,7 @@ export function SectionAccordion({ sections, sources }: { sections: BridgeSectio
             <AccordionTrigger>{k}</AccordionTrigger>
             <AccordionContent>
               {isEmpty
-                ? <p className="text-sm text-muted-foreground">该章节内容待补充</p>
+                ? <p className="text-sm text-muted-foreground">{t('section_empty')}</p>
                 : (
                   <ul className="space-y-3">
                     {(sec.l1.length > 0 ? sec.l1 : sec.l0).map((item, i) => (

@@ -65,7 +65,8 @@ export function QASheet() {
       const finalStatus = useQAStore.getState().status;
       if (finalStatus === 'connecting' || finalStatus === 'streaming') setStatus('done');
     } catch {
-      setError({ code: 'NETWORK', message: t('network_error'), fallback_actions: [] });
+      // Store as error code; QAResult resolves `errors.NETWORK` at render time.
+      setError({ code: 'NETWORK', message: 'NETWORK', fallback_actions: [] });
     }
   }
 

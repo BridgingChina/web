@@ -64,7 +64,9 @@ async function request<T>(
   if (needsAuth(path)) {
     const token = await ensureFreshJwt();
     if (!token) {
-      throw new ApiClientError(401, { code: 'UNAUTHENTICATED', message: '请先登录' });
+      // Message stays empty — consumers should translate by `err.code`.
+      // Kept in `message` for log/debug readability only; UI never renders raw.
+      throw new ApiClientError(401, { code: 'UNAUTHENTICATED', message: 'UNAUTHENTICATED' });
     }
     headers['Authorization'] = `Bearer ${token}`;
   }
@@ -87,7 +89,9 @@ async function request<T>(
         useAuthStore.getState().clear();
       }
       const errBody = await res.json().catch(() => ({
-        error: { code: 'UNKNOWN', message: '请求失败' },
+        // No user-visible copy here — the code is the translation key. The
+        // component layer resolves via `t(\`errors.\${err.code}\`)`.
+        error: { code: 'UNKNOWN', message: 'UNKNOWN' },
       }));
       throw new ApiClientError(res.status, errBody.error);
     }

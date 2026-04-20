@@ -1,11 +1,13 @@
 'use client';
-import Link from 'next/link';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { useKnowledgeTree } from '@/api/hooks/useKnowledge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { ChevronRight, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTranslateError } from '@/lib/error-message';
 import type { KnowledgeTreeCategory } from '@/api/types';
 
 interface Props {
@@ -14,6 +16,9 @@ interface Props {
 
 export function KnowledgeTreeWeb({ selectedLineId }: Props) {
   const { data, isLoading, error } = useKnowledgeTree();
+  const tFeedback = useTranslations('feedback');
+  const tKnowledge = useTranslations('knowledge');
+  const translateError = useTranslateError();
 
   if (isLoading) {
     return (
@@ -22,11 +27,17 @@ export function KnowledgeTreeWeb({ selectedLineId }: Props) {
       </div>
     );
   }
-  if (error) return <p className="text-sm text-destructive">加载失败：{(error as Error).message}</p>;
+  if (error) {
+    return (
+      <p className="text-sm text-destructive">
+        {tFeedback('load_failed_with_message', { message: translateError(error) })}
+      </p>
+    );
+  }
   if (!data) return null;
 
   const line = selectedLineId ? data.lines.find(l => l.id === selectedLineId) : data.lines[0];
-  if (!line) return <p className="text-sm text-muted-foreground">暂无数据</p>;
+  if (!line) return <p className="text-sm text-muted-foreground">{tKnowledge('no_data')}</p>;
 
   return <CategoryList categories={line.children} />;
 }
