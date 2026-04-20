@@ -1,6 +1,7 @@
 'use client';
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { useBridgeDetail, useBridgeKnowledgePoints } from '@/api/hooks/useBridges';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
@@ -20,6 +21,8 @@ export default function BridgeDetailPage() {
   const { data: bridge, isLoading, error } = useBridgeDetail(id);
   const { data: kps } = useBridgeKnowledgePoints(id);
   const openQA = useQAStore((s) => s.open);
+  const t = useTranslations('bridge_detail');
+  const tCommon = useTranslations('common');
 
   if (isLoading) return <DetailSkeleton />;
   if (error) return <ErrorState message={(error as Error).message} />;
@@ -35,7 +38,11 @@ export default function BridgeDetailPage() {
           <article className="space-y-6">
             <header className="space-y-3">
               <h1 className="text-3xl font-semibold tracking-tight">{bridge.name}</h1>
-              {bridge.aliases && <p className="text-sm text-muted-foreground">别名：{bridge.aliases}</p>}
+              {bridge.aliases && (
+                <p className="text-sm text-muted-foreground">
+                  {t('aliases_label', { aliases: bridge.aliases })}
+                </p>
+              )}
               <div className="flex flex-wrap gap-2 text-xs">
                 <Badge>{bridge.bridge_type}</Badge>
                 <Badge variant="secondary">{bridge.era}</Badge>
@@ -43,17 +50,17 @@ export default function BridgeDetailPage() {
               </div>
               {bridge.tags.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
-                  {bridge.tags.map(t => <Badge key={t} variant="outline" className="text-xs">{t}</Badge>)}
+                  {bridge.tags.map(tag => <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>)}
                 </div>
               )}
               <div className="flex flex-wrap gap-2 pt-2">
                 <FavoriteButton targetType="bridge" targetId={bridge.id} />
                 <Button size="sm" variant="outline" onClick={() => openQA({ type: 'bridge', id: bridge.id, label: bridge.name })}>
-                  <MessageCircleQuestion className="mr-1.5 h-4 w-4" />提问
+                  <MessageCircleQuestion className="mr-1.5 h-4 w-4" />{tCommon('ask')}
                 </Button>
                 {bridge.latitude && bridge.longitude && (
                   <Link href={`/map?bridge=${bridge.id}`}>
-                    <Button size="sm" variant="outline"><MapPin className="mr-1.5 h-4 w-4" />在地图定位</Button>
+                    <Button size="sm" variant="outline"><MapPin className="mr-1.5 h-4 w-4" />{t('locate_on_map')}</Button>
                   </Link>
                 )}
               </div>
@@ -62,20 +69,22 @@ export default function BridgeDetailPage() {
             <Separator />
 
             <section>
-              <h2 className="mb-3 text-lg font-medium">桥梁档案</h2>
+              <h2 className="mb-3 text-lg font-medium">{t('archive')}</h2>
               <SectionAccordion sections={bridge.sections} sources={bridge.sources} />
             </section>
 
             <SourcesList sources={bridge.sources} />
             {bridge.sources_count > bridge.sources.length && (
-              <p className="text-xs text-muted-foreground">共 {bridge.sources_count} 条来源（已展示 {bridge.sources.length}）</p>
+              <p className="text-xs text-muted-foreground">
+                {t('sources_summary', { total: bridge.sources_count, shown: bridge.sources.length })}
+              </p>
             )}
           </article>
 
           <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
             <div className="rounded-md border bg-card p-4">
-              <h2 className="mb-2 text-sm font-medium">关联知识点</h2>
-              {(!kps || kps.length === 0) && <p className="text-xs text-muted-foreground">暂无</p>}
+              <h2 className="mb-2 text-sm font-medium">{t('related_kps')}</h2>
+              {(!kps || kps.length === 0) && <p className="text-xs text-muted-foreground">{tCommon('empty')}</p>}
               <ul className="space-y-2 text-sm">
                 {(kps ?? []).map(kp => (
                   <li key={kp.id}>
