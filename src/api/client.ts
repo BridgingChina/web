@@ -1,16 +1,17 @@
 import { API_BASE_URL, API_TIMEOUT } from '@/constants/config';
 import { useDeviceStore } from '@/stores/deviceStore';
+import { useAuthStore } from '@/stores/authStore';
+import { ensureFreshJwt } from '@/lib/jwt-refresh';
 import type { ApiError } from './types';
 
-// Read env lazily so vi.stubEnv in tests takes effect after module load.
 function getApiBaseUrl(): string {
   return process.env.NEXT_PUBLIC_API_BASE_URL ?? API_BASE_URL;
 }
 
-const DEVICE_ID_ENDPOINTS = ['/favorites', '/review', '/history'];
+const AUTHED_ENDPOINTS = ['/favorites', '/review', '/history'];
 
-function needsDeviceId(path: string): boolean {
-  return DEVICE_ID_ENDPOINTS.some((ep) => path.startsWith(ep));
+function needsAuth(path: string): boolean {
+  return AUTHED_ENDPOINTS.some((ep) => path.startsWith(ep));
 }
 
 export class ApiClientError extends Error {
@@ -37,7 +38,7 @@ async function request<T>(
     timeout?: number;
   } = {},
 ): Promise<T> {
-  const { deviceId, language } = useDeviceStore.getState();
+  const { language } = useDeviceStore.getState();
   const url = new URL(`${getApiBaseUrl()}${path}`);
   if (options.params) {
     Object.entries(options.params).forEach(([k, v]) => {
@@ -48,7 +49,13 @@ async function request<T>(
     'Accept-Language': language,
     ...options.headers,
   };
-  if (needsDeviceId(path) && deviceId) headers['X-Device-Id'] = deviceId;
+  if (needsAuth(path)) {
+    const token = await ensureFreshJwt();
+    if (!token) {
+      throw new ApiClientError(401, { code: 'UNAUTHENTICATED', message: '请先登录' });
+    }
+    headers['Authorization'] = `Bearer ${token}`;
+  }
   if (options.body && !(options.body instanceof FormData)) {
     headers['Content-Type'] = 'application/json';
   }
@@ -64,6 +71,9 @@ async function request<T>(
       signal: controller.signal,
     });
     if (!res.ok) {
+      if (res.status === 401) {
+        useAuthStore.getState().clear();
+      }
       const errBody = await res.json().catch(() => ({
         error: { code: 'UNKNOWN', message: '请求失败' },
       }));

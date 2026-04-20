@@ -1,15 +1,19 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import type { FlashCard } from '@/api/types';
 import { FlashCardFlip } from './FlashCardFlip';
 import { SummaryCard } from './SummaryCard';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Check, RotateCw } from 'lucide-react';
 import { useUpdateReviewProgress } from '@/api/hooks/useReview';
+import { useSession } from '@/lib/auth-client';
 
 interface Props { cards: FlashCard[]; backHref?: string; }
 
 export function ReviewSession({ cards, backHref }: Props) {
+  const router = useRouter();
+  const { data: session } = useSession();
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [results, setResults] = useState<Record<string, 'mastered' | 'needs_review'>>({});
@@ -20,6 +24,10 @@ export function ReviewSession({ cards, backHref }: Props) {
 
   function mark(mastery: 'mastered' | 'needs_review') {
     if (!card) return;
+    if (!session) {
+      router.push('/me');
+      return;
+    }
     setResults(r => ({ ...r, [card.id]: mastery }));
     update.mutate({ flashcardId: card.id, mastery });
     next();

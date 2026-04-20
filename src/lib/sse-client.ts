@@ -29,13 +29,12 @@ export function parseSSEFrames(buf: string): { events: SSEEvent[]; remainder: st
 
 export async function* askQuestion(req: AskRequest, signal?: AbortSignal): AsyncGenerator<SSEEvent> {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? '';
-  const { language, deviceId } = useDeviceStore.getState();
+  const { language } = useDeviceStore.getState();
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     'Accept': 'text/event-stream',
     'Accept-Language': language,
   };
-  if (deviceId) headers['X-Device-Id'] = deviceId;
 
   let res: Response;
   try {

@@ -3,6 +3,8 @@ import { useFavoriteCheck, useAddFavorite, useRemoveFavorite } from '@/api/hooks
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
 import { useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from '@/lib/auth-client';
 
 interface Props {
   targetType: 'bridge' | 'knowledge_point' | 'flashcard';
@@ -10,7 +12,10 @@ interface Props {
 }
 
 export function FavoriteButton({ targetType, targetId }: Props) {
-  const targets = useMemo(() => [{ type: targetType, id: targetId }], [targetType, targetId]);
+  const router = useRouter();
+  const { data: session } = useSession();
+  const isAuthed = !!session;
+  const targets = useMemo(() => (isAuthed ? [{ type: targetType, id: targetId }] : null), [isAuthed, targetType, targetId]);
   const { data: results } = useFavoriteCheck(targets);
   const add = useAddFavorite();
   const remove = useRemoveFavorite();
@@ -22,6 +27,10 @@ export function FavoriteButton({ targetType, targetId }: Props) {
 
   function toggle() {
     if (pending) return;
+    if (!isAuthed) {
+      router.push('/me');
+      return;
+    }
     if (favorited && favoriteId) remove.mutate(favoriteId);
     else add.mutate({ target_type: targetType, target_id: targetId });
   }
