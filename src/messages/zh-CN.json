@@ -54,9 +54,9 @@
     "response_structure": "回答结构",
     "network_error": "网络异常，请稍后重试",
     "examples": {
-      "ex1": "赵州桥的敞肩拱有什么结构优势？",
-      "ex2": "宋代为什么偏爱石拱桥？",
-      "ex3": "虹桥的榫卯结构怎么传力？"
+      "zhaozhou_arch": "赵州桥的敞肩拱有什么结构优势？",
+      "song_stone": "宋代为什么偏爱石拱桥？",
+      "hongqiao_joinery": "虹桥的榫卯结构怎么传力？"
     },
     "steps": {
       "outline": { "label": "要点", "hint": "核心结论先行" },

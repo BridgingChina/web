@@ -29,7 +29,7 @@ const STEP_ICONS = {
 } as const;
 
 const STEP_KEYS = ['outline', 'detail', 'deep_dive', 'sources'] as const;
-const EXAMPLE_KEYS = ['ex1', 'ex2', 'ex3'] as const;
+const EXAMPLE_KEYS = ['zhaozhou_arch', 'song_stone', 'hongqiao_joinery'] as const;
 
 export function QASheet() {
   const { isOpen, close, context, status,

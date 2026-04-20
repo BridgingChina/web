@@ -38,7 +38,7 @@
   },
   "bridge_detail": {
     "aliases_label": "Also known as: {aliases}",
-    "locate_on_map": "Show on map",
+    "locate_on_map": "Locate on map",
     "archive": "Bridge archive",
     "sources_summary": "{total} sources total (showing {shown})",
     "related_kps": "Related knowledge points"
@@ -54,9 +54,9 @@
     "response_structure": "Response structure",
     "network_error": "Network error, please try again later",
     "examples": {
-      "ex1": "What are the structural advantages of Zhaozhou Bridge's open-spandrel arch?",
-      "ex2": "Why did the Song dynasty favor stone arch bridges?",
-      "ex3": "How does the mortise-and-tenon joinery of Hongqiao transfer load?"
+      "zhaozhou_arch": "What are the structural advantages of Zhaozhou Bridge's open-spandrel arch?",
+      "song_stone": "Why did the Song dynasty favor stone arch bridges?",
+      "hongqiao_joinery": "How does the mortise-and-tenon joinery of Hongqiao transfer load?"
     },
     "steps": {
       "outline": { "label": "Outline", "hint": "Key conclusions first" },
