@@ -7,6 +7,8 @@
     "cancel": "取消",
     "confirm": "确认",
     "favorite": "收藏",
+    "favorite_active": "已收藏",
+    "unfavorite": "取消收藏",
     "review": "复习",
     "history": "浏览历史",
     "sign_in": "登录",
@@ -16,7 +18,12 @@
     "no_results": "没有更多结果",
     "search": "搜索",
     "ask": "提问",
-    "empty": "暂无"
+    "empty": "暂无",
+    "language_label": "语言 / Language",
+    "bridge": "桥梁",
+    "knowledge_point": "知识点",
+    "flashcard": "卡片",
+    "all": "全部"
   },
   "nav": {
     "home": "首页",
@@ -36,12 +43,19 @@
     "hero_subtitle": "中国古桥知识图谱 · 桥知 BridgingChina",
     "cta": "开始探索"
   },
+  "metadata": {
+    "title": "桥知 BridgingChina · 古桥文化知识库",
+    "description": "中国古代桥梁知识图谱、地图、问答"
+  },
   "bridge_detail": {
     "aliases_label": "别名：{aliases}",
     "locate_on_map": "在地图定位",
     "archive": "桥梁档案",
     "sources_summary": "共 {total} 条来源（已展示 {shown}）",
-    "related_kps": "关联知识点"
+    "related_kps": "关联知识点",
+    "no_image": "暂无图片（{bridgeType}）",
+    "section_placeholder": "本桥详细内容待补充，可先查看右侧的关联知识点。",
+    "section_empty": "该章节内容待补充"
   },
   "qa": {
     "title": "AI 问答",
@@ -53,6 +67,14 @@
     "searching": "正在从文献中检索并整理答案",
     "response_structure": "回答结构",
     "network_error": "网络异常，请稍后重试",
+    "outline_label": "要点",
+    "sources_label": "来源",
+    "tabs": {
+      "comparisons": "对比",
+      "controversies": "争议",
+      "evolution": "演变",
+      "further_reading": "延伸阅读"
+    },
     "examples": {
       "zhaozhou_arch": "赵州桥的敞肩拱有什么结构优势？",
       "song_stone": "宋代为什么偏爱石拱桥？",
@@ -64,5 +86,158 @@
       "deep_dive": { "label": "深挖", "hint": "对比 · 争议 · 延伸" },
       "sources": { "label": "来源", "hint": "可回溯的引用" }
     }
+  },
+  "errors": {
+    "app_title": "服务暂时不可用",
+    "app_message_fallback": "请稍后重试，或返回首页继续浏览",
+    "boundary_title": "界面渲染出错",
+    "boundary_fallback": "请刷新页面重试",
+    "not_found_title": "页面不存在",
+    "not_found_description": "你访问的链接可能已被移除或拼写错误。",
+    "back_home": "回到首页",
+    "UNAUTHENTICATED": "请先登录",
+    "UNKNOWN": "请求失败",
+    "NETWORK": "网络异常，请稍后重试",
+    "HTTP_ERROR": "服务返回错误（{status}）",
+    "SSE_CONNECT_FAILED": "连接失败，请稍后重试"
+  },
+  "feedback": {
+    "error_title_default": "加载失败",
+    "empty_title_default": "暂无内容",
+    "search_failed": "搜索失败：{message}",
+    "load_failed_with_message": "加载失败：{message}"
+  },
+  "me": {
+    "title": "我的",
+    "login_required_title": "需要登录",
+    "login_required_description": "登录后可同步收藏、复习进度与浏览历史。",
+    "go_sign_in": "前往登录",
+    "tabs": {
+      "favorites": "收藏",
+      "history": "浏览历史",
+      "settings": "设置"
+    },
+    "favorites": {
+      "empty": "还没有收藏，去 <knowledge>知识图谱</knowledge> 或 <map>地图</map> 探索吧。"
+    },
+    "history": {
+      "empty": "还没有浏览记录。",
+      "today": "今天",
+      "yesterday": "昨天",
+      "earlier": "更早",
+      "bridge_badge": "桥"
+    },
+    "review": {
+      "done_today": "今日复习已完成 ✓",
+      "due_count": "今日复习 {count} 张",
+      "hint": "坚持每日打卡，巩固识桥要点。",
+      "start": "开始复习"
+    },
+    "settings": {
+      "account": "账户",
+      "email_label": "邮箱：",
+      "email_unverified": "未验证",
+      "name_label": "名称：",
+      "language": "语言",
+      "chinese": "中文",
+      "english": "English",
+      "map_source": "地图来源",
+      "map_unconfigured": "未配置",
+      "map_approval_prefix": "审图号",
+      "admin": "管理员",
+      "go_to_console": "前往管理后台 →"
+    }
+  },
+  "search": {
+    "placeholder": "搜索桥梁或知识点（如 赵州桥、敞肩拱）",
+    "type_all": "全部",
+    "type_bridge": "桥梁",
+    "type_knowledge_point": "知识点",
+    "recent_title": "最近搜索",
+    "recent_clear": "清除",
+    "suggestions_title": "推荐",
+    "no_match_title": "没有找到与「{q}」匹配的结果",
+    "no_match_hint": "试试别名（如：赵州桥 / 安济桥），或在地图上探索附近桥梁。",
+    "result_line_prefix": "主线：{line}",
+    "suggestions": [
+      "赵州桥",
+      "拱桥",
+      "敞肩拱",
+      "广济桥",
+      "宋元",
+      "石拱桥"
+    ]
+  },
+  "knowledge": {
+    "mainlines_label": "四大主线",
+    "title": "知识图谱",
+    "recent_views_title": "最近浏览",
+    "recent_views_hint": "浏览历史将在「我的」页接入。",
+    "no_data": "暂无数据",
+    "aliases_prefix": "别名：{aliases}",
+    "aliases_separator": "、",
+    "difficulty_label": "难度：{difficulty}",
+    "points_summary": "要点（共 {count} 条 · 典型桥梁 {bridges}）",
+    "deep_dive_heading": "深挖",
+    "no_deep_dive": "暂无深挖内容",
+    "typical_bridges": "典型桥梁（{count}）",
+    "related_terms_label": "相关术语：",
+    "locate_on_map": "在地图查看",
+    "flashcards_entry": "卡片练习",
+    "sources_heading": "来源"
+  },
+  "flashcard": {
+    "page_title": "{name} · 卡片练习",
+    "card_type_concept": "概念卡",
+    "card_type_identification": "辨识卡",
+    "tap_to_flip": "点击翻转",
+    "answer_label": "答案",
+    "typical_example_prefix": "典型桥例：",
+    "empty": "暂无可复习的卡片。",
+    "keyboard_hint": "空格 翻转 · 1/2 标记 · ←/→ 切卡",
+    "prev": "上一张",
+    "next": "下一张",
+    "mastered": "已掌握",
+    "needs_review": "待复习",
+    "summary_title": "本次复习完成",
+    "summary_total": "共",
+    "summary_mastered": "已掌握",
+    "summary_needs_review": "待复习",
+    "back": "返回"
+  },
+  "map": {
+    "load_failed_title": "地图加载失败",
+    "load_failed_hint": "请检查 NEXT_PUBLIC_AMAP_KEY 是否在 .env.local 中正确配置。",
+    "filters": {
+      "bridge_type": "桥型",
+      "era": "年代",
+      "region": "地区",
+      "all": "全部"
+    },
+    "attribution_prefix": "地图来源：",
+    "attribution_approval_prefix": "审图号：",
+    "results_title": "桥梁结果",
+    "viewport_summary": "视野内 {points} 个点位 · {clusters} 个聚类",
+    "click_marker_hint": "点击地图上的标记查看桥梁详情。",
+    "open_detail": "进入详情"
+  },
+  "recognize": {
+    "title": "识景",
+    "intro": "上传一张桥梁图片，系统将匹配最相似的候选桥梁。",
+    "recognizing": "识别中…",
+    "recognize_failed": "识别失败：{message}",
+    "preview_alt": "待识别",
+    "drop_hint": "拖拽图片到此处，或点击选择文件",
+    "file_spec": "JPEG / PNG · 最大 5MB",
+    "error_wrong_type": "仅支持 JPEG / PNG 图片",
+    "error_too_large": "图片不能超过 5MB",
+    "no_match_title": "未能识别这张图片",
+    "fallback_intro": "试试以下兜底入口：",
+    "go_search": "去搜索",
+    "go_map": "去地图",
+    "go_map_suffix": "筛选",
+    "parenthetical": "（{hint}）",
+    "reupload": "重新上传",
+    "candidates_title": "候选桥梁（{count}）"
   }
 }

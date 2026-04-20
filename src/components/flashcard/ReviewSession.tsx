@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import type { FlashCard } from '@/api/types';
 import { FlashCardFlip } from './FlashCardFlip';
 import { SummaryCard } from './SummaryCard';
@@ -18,6 +19,7 @@ export function ReviewSession({ cards, backHref }: Props) {
   const [flipped, setFlipped] = useState(false);
   const [results, setResults] = useState<Record<string, 'mastered' | 'needs_review'>>({});
   const update = useUpdateReviewProgress();
+  const t = useTranslations('flashcard');
 
   const card = cards[index];
   const done = index >= cards.length;
@@ -51,7 +53,7 @@ export function ReviewSession({ cards, backHref }: Props) {
   }, [card, done]);
 
   if (cards.length === 0) {
-    return <p className="text-center text-sm text-muted-foreground">暂无可复习的卡片。</p>;
+    return <p className="text-center text-sm text-muted-foreground">{t('empty')}</p>;
   }
 
   if (done) {
@@ -64,21 +66,21 @@ export function ReviewSession({ cards, backHref }: Props) {
     <div className="mx-auto max-w-xl space-y-4">
       <div className="flex items-center justify-between text-sm text-muted-foreground">
         <span>{index + 1} / {cards.length}</span>
-        <span className="text-xs">空格 翻转 · 1/2 标记 · ←/→ 切卡</span>
+        <span className="text-xs">{t('keyboard_hint')}</span>
       </div>
       <FlashCardFlip card={card} flipped={flipped} onClick={() => setFlipped(f => !f)} />
       <div className="flex gap-2">
         <Button variant="outline" onClick={prev} disabled={index === 0}>
-          <ChevronLeft className="mr-1 h-4 w-4" />上一张
+          <ChevronLeft className="mr-1 h-4 w-4" />{t('prev')}
         </Button>
         <Button variant="default" className="flex-1" onClick={() => mark('mastered')}>
-          <Check className="mr-1 h-4 w-4" />已掌握
+          <Check className="mr-1 h-4 w-4" />{t('mastered')}
         </Button>
         <Button variant="secondary" className="flex-1" onClick={() => mark('needs_review')}>
-          <RotateCw className="mr-1 h-4 w-4" />待复习
+          <RotateCw className="mr-1 h-4 w-4" />{t('needs_review')}
         </Button>
         <Button variant="outline" onClick={next} disabled={index >= cards.length - 1}>
-          下一张<ChevronRight className="ml-1 h-4 w-4" />
+          {t('next')}<ChevronRight className="ml-1 h-4 w-4" />
         </Button>
       </div>
     </div>

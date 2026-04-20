@@ -1,5 +1,6 @@
 'use client';
 import { Component, ReactNode } from 'react';
+import { useTranslations } from 'next-intl';
 import { ErrorState } from './ErrorState';
 
 interface Props { children: ReactNode; fallback?: (error: Error, reset: () => void) => ReactNode; }
@@ -19,14 +20,20 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.error) {
       if (this.props.fallback) return this.props.fallback(this.state.error, this.reset);
-      return (
-        <ErrorState
-          title="界面渲染出错"
-          message={this.state.error.message || '请刷新页面重试'}
-          onRetry={this.reset}
-        />
-      );
+      return <BoundaryFallback error={this.state.error} onReset={this.reset} />;
     }
     return this.props.children;
   }
+}
+
+// Extracted so we can call `useTranslations` (hook) — class `render` cannot.
+function BoundaryFallback({ error, onReset }: { error: Error; onReset: () => void }) {
+  const t = useTranslations('errors');
+  return (
+    <ErrorState
+      title={t('boundary_title')}
+      message={error.message || t('boundary_fallback')}
+      onRetry={onReset}
+    />
+  );
 }

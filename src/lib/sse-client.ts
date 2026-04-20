@@ -45,12 +45,19 @@ export async function* askQuestion(req: AskRequest, signal?: AbortSignal): Async
       signal,
     });
   } catch {
-    yield { event: 'error', data: { code: 'NETWORK', message: 'SSE 连接失败' } };
+    // `message` is a code — QAResult translates via `t(\`errors.\${code}\`)`.
+    yield {
+      event: 'error',
+      data: { code: 'SSE_CONNECT_FAILED', message: 'SSE_CONNECT_FAILED', fallback_actions: [] },
+    };
     return;
   }
 
   if (!res.ok || !res.body) {
-    yield { event: 'error', data: { code: 'HTTP_ERROR', message: `服务返回 ${res.status}` } };
+    yield {
+      event: 'error',
+      data: { code: 'HTTP_ERROR', message: 'HTTP_ERROR', status: res.status, fallback_actions: [] },
+    };
     return;
   }
 

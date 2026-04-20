@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { loadAMap } from '@/lib/amap-loader';
 import { useBridgeClusters } from '@/api/hooks/useBridges';
 import { MapAttribution } from './MapAttribution';
@@ -29,6 +30,7 @@ export function AMapContainer({ onSelectBridge, onCountsChange }: Props) {
     region?: string;
   }>({});
   const [error, setError] = useState<string | null>(null);
+  const t = useTranslations('map');
 
   const { data: clusters } = useBridgeClusters(
     bounds
@@ -152,11 +154,13 @@ export function AMapContainer({ onSelectBridge, onCountsChange }: Props) {
   if (error) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-2 bg-muted p-6 text-center">
-        <p className="text-sm font-medium">地图加载失败</p>
+        <p className="text-sm font-medium">{t('load_failed_title')}</p>
+        {/*
+          Raw AMap SDK error — typically an English/CN mix from the vendor.
+          We surface it verbatim for debugging, not localisation.
+        */}
         <p className="text-xs text-muted-foreground">{error}</p>
-        <p className="text-xs text-muted-foreground">
-          请检查 NEXT_PUBLIC_AMAP_KEY 是否在 .env.local 中正确配置。
-        </p>
+        <p className="text-xs text-muted-foreground">{t('load_failed_hint')}</p>
       </div>
     );
   }

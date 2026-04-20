@@ -7,6 +7,8 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "favorite": "Favorite",
+    "favorite_active": "Favorited",
+    "unfavorite": "Remove favorite",
     "review": "Review",
     "history": "History",
     "sign_in": "Sign in",
@@ -16,7 +18,12 @@
     "no_results": "No results",
     "search": "Search",
     "ask": "Ask",
-    "empty": "None"
+    "empty": "None",
+    "language_label": "Language / 语言",
+    "bridge": "Bridge",
+    "knowledge_point": "Knowledge point",
+    "flashcard": "Flashcard",
+    "all": "All"
   },
   "nav": {
     "home": "Home",
@@ -36,12 +43,19 @@
     "hero_subtitle": "A Knowledge Graph of Ancient Chinese Bridges · 桥知 BridgingChina",
     "cta": "Start exploring"
   },
+  "metadata": {
+    "title": "BridgingChina · Ancient Chinese Bridges Knowledge Base",
+    "description": "Knowledge graph, map, and Q&A for China's ancient bridges"
+  },
   "bridge_detail": {
     "aliases_label": "Also known as: {aliases}",
     "locate_on_map": "Locate on map",
     "archive": "Bridge archive",
     "sources_summary": "{total} sources total (showing {shown})",
-    "related_kps": "Related knowledge points"
+    "related_kps": "Related knowledge points",
+    "no_image": "No image available ({bridgeType})",
+    "section_placeholder": "Detailed content for this bridge is not yet available — see the related knowledge points on the right.",
+    "section_empty": "Section content coming soon"
   },
   "qa": {
     "title": "AI Q&A",
@@ -53,6 +67,14 @@
     "searching": "Searching the literature and composing an answer",
     "response_structure": "Response structure",
     "network_error": "Network error, please try again later",
+    "outline_label": "Outline",
+    "sources_label": "Sources",
+    "tabs": {
+      "comparisons": "Comparisons",
+      "controversies": "Debates",
+      "evolution": "Evolution",
+      "further_reading": "Further reading"
+    },
     "examples": {
       "zhaozhou_arch": "What are the structural advantages of Zhaozhou Bridge's open-spandrel arch?",
       "song_stone": "Why did the Song dynasty favor stone arch bridges?",
@@ -64,5 +86,158 @@
       "deep_dive": { "label": "Deep dive", "hint": "Comparisons · debates · extensions" },
       "sources": { "label": "Sources", "hint": "Traceable citations" }
     }
+  },
+  "errors": {
+    "app_title": "Service temporarily unavailable",
+    "app_message_fallback": "Please try again later, or return to the home page.",
+    "boundary_title": "Something went wrong rendering this page",
+    "boundary_fallback": "Please refresh the page and try again.",
+    "not_found_title": "Page not found",
+    "not_found_description": "The link you followed may have been removed or mistyped.",
+    "back_home": "Back to home",
+    "UNAUTHENTICATED": "Please sign in first",
+    "UNKNOWN": "Request failed",
+    "NETWORK": "Network error, please try again later",
+    "HTTP_ERROR": "Server returned an error ({status})",
+    "SSE_CONNECT_FAILED": "Connection failed, please try again later"
+  },
+  "feedback": {
+    "error_title_default": "Failed to load",
+    "empty_title_default": "No content",
+    "search_failed": "Search failed: {message}",
+    "load_failed_with_message": "Failed to load: {message}"
+  },
+  "me": {
+    "title": "Me",
+    "login_required_title": "Sign in required",
+    "login_required_description": "Sign in to sync your favorites, review progress, and browsing history.",
+    "go_sign_in": "Go to sign in",
+    "tabs": {
+      "favorites": "Favorites",
+      "history": "History",
+      "settings": "Settings"
+    },
+    "favorites": {
+      "empty": "No favorites yet. Explore the <knowledge>Knowledge Graph</knowledge> or <map>Map</map>."
+    },
+    "history": {
+      "empty": "No browsing history yet.",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "earlier": "Earlier",
+      "bridge_badge": "Bridge"
+    },
+    "review": {
+      "done_today": "Today's review is complete ✓",
+      "due_count": "{count} cards due today",
+      "hint": "Keep a daily streak to reinforce what you've learned.",
+      "start": "Start review"
+    },
+    "settings": {
+      "account": "Account",
+      "email_label": "Email:",
+      "email_unverified": "Unverified",
+      "name_label": "Name:",
+      "language": "Language",
+      "chinese": "中文",
+      "english": "English",
+      "map_source": "Map provider",
+      "map_unconfigured": "Not configured",
+      "map_approval_prefix": "Approval",
+      "admin": "Admin",
+      "go_to_console": "Open admin console →"
+    }
+  },
+  "search": {
+    "placeholder": "Search bridges or knowledge points (e.g. Zhaozhou Bridge, open-spandrel arch)",
+    "type_all": "All",
+    "type_bridge": "Bridges",
+    "type_knowledge_point": "Knowledge points",
+    "recent_title": "Recent searches",
+    "recent_clear": "Clear",
+    "suggestions_title": "Suggestions",
+    "no_match_title": "No results matching \"{q}\"",
+    "no_match_hint": "Try an alias (e.g. Zhaozhou Bridge / Anji Bridge), or explore nearby bridges on the map.",
+    "result_line_prefix": "Mainline: {line}",
+    "suggestions": [
+      "Zhaozhou Bridge",
+      "Arch bridge",
+      "Open-spandrel arch",
+      "Guangji Bridge",
+      "Song-Yuan",
+      "Stone arch bridge"
+    ]
+  },
+  "knowledge": {
+    "mainlines_label": "Four mainlines",
+    "title": "Knowledge Graph",
+    "recent_views_title": "Recently viewed",
+    "recent_views_hint": "Your browsing history will show up on the \"Me\" page.",
+    "no_data": "No data",
+    "aliases_prefix": "Also known as: {aliases}",
+    "aliases_separator": ", ",
+    "difficulty_label": "Difficulty: {difficulty}",
+    "points_summary": "Key points ({count} · typical bridges {bridges})",
+    "deep_dive_heading": "Deep dive",
+    "no_deep_dive": "No deep-dive content yet",
+    "typical_bridges": "Typical bridges ({count})",
+    "related_terms_label": "Related terms:",
+    "locate_on_map": "View on map",
+    "flashcards_entry": "Flashcards",
+    "sources_heading": "Sources"
+  },
+  "flashcard": {
+    "page_title": "{name} · Flashcards",
+    "card_type_concept": "Concept card",
+    "card_type_identification": "Identification card",
+    "tap_to_flip": "Tap to flip",
+    "answer_label": "Answer",
+    "typical_example_prefix": "Typical example: ",
+    "empty": "No flashcards available for review.",
+    "keyboard_hint": "Space flip · 1/2 mark · ←/→ navigate",
+    "prev": "Previous",
+    "next": "Next",
+    "mastered": "Mastered",
+    "needs_review": "Needs review",
+    "summary_title": "Review complete",
+    "summary_total": "Total",
+    "summary_mastered": "Mastered",
+    "summary_needs_review": "Needs review",
+    "back": "Back"
+  },
+  "map": {
+    "load_failed_title": "Map failed to load",
+    "load_failed_hint": "Check that NEXT_PUBLIC_AMAP_KEY is correctly set in your .env.local.",
+    "filters": {
+      "bridge_type": "Bridge type",
+      "era": "Era",
+      "region": "Region",
+      "all": "All"
+    },
+    "attribution_prefix": "Map data: ",
+    "attribution_approval_prefix": "Approval: ",
+    "results_title": "Bridge results",
+    "viewport_summary": "{points} points · {clusters} clusters in view",
+    "click_marker_hint": "Click a marker on the map to see bridge details.",
+    "open_detail": "Open details"
+  },
+  "recognize": {
+    "title": "Recognize",
+    "intro": "Upload a photo of a bridge and we'll match the most similar candidates.",
+    "recognizing": "Recognizing…",
+    "recognize_failed": "Recognition failed: {message}",
+    "preview_alt": "Uploaded image",
+    "drop_hint": "Drop an image here, or click to choose a file",
+    "file_spec": "JPEG / PNG · up to 5 MB",
+    "error_wrong_type": "Only JPEG or PNG images are supported",
+    "error_too_large": "Image must be smaller than 5 MB",
+    "no_match_title": "Could not recognize this image",
+    "fallback_intro": "Try one of these fallbacks:",
+    "go_search": "Search",
+    "go_map": "Map",
+    "go_map_suffix": "filter",
+    "parenthetical": " ({hint})",
+    "reupload": "Re-upload",
+    "candidates_title": "Candidates ({count})"
   }
 }

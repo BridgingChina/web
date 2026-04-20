@@ -1,4 +1,5 @@
 'use client';
+import { useTranslations } from 'next-intl';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import type { KnowledgePointDetail, Source } from '@/api/types';
 import { CitationBadges } from './CitationBadges';
@@ -13,9 +14,11 @@ export function L2Section({ l2, sources }: Props) {
   const hasControversies = l2.controversies?.length > 0;
   const hasReading = l2.further_reading?.length > 0;
   const hasEvolution = !!l2.evolution;
+  const t = useTranslations('qa.tabs');
+  const tKnowledge = useTranslations('knowledge');
 
   if (!hasComparisons && !hasControversies && !hasReading && !hasEvolution) {
-    return <p className="text-sm text-muted-foreground">暂无深挖内容</p>;
+    return <p className="text-sm text-muted-foreground">{tKnowledge('no_deep_dive')}</p>;
   }
 
   const initial = hasComparisons ? 'comparisons' : hasEvolution ? 'evolution' : hasControversies ? 'controversies' : 'reading';
@@ -23,10 +26,10 @@ export function L2Section({ l2, sources }: Props) {
   return (
     <Tabs defaultValue={initial}>
       <TabsList>
-        {hasComparisons && <TabsTrigger value="comparisons">对比</TabsTrigger>}
-        {hasEvolution && <TabsTrigger value="evolution">演变</TabsTrigger>}
-        {hasControversies && <TabsTrigger value="controversies">争议</TabsTrigger>}
-        {hasReading && <TabsTrigger value="reading">延伸阅读</TabsTrigger>}
+        {hasComparisons && <TabsTrigger value="comparisons">{t('comparisons')}</TabsTrigger>}
+        {hasEvolution && <TabsTrigger value="evolution">{t('evolution')}</TabsTrigger>}
+        {hasControversies && <TabsTrigger value="controversies">{t('controversies')}</TabsTrigger>}
+        {hasReading && <TabsTrigger value="reading">{t('further_reading')}</TabsTrigger>}
       </TabsList>
 
       {hasComparisons && (
