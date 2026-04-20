@@ -1,12 +1,14 @@
 'use client';
 import { useEffect } from 'react';
 import { useRecordHistory } from '@/api/hooks/useHistory';
+import { useSession } from '@/lib/auth-client';
 
 export function RecordHistoryOnMount({ targetType, targetId }: { targetType: 'bridge' | 'knowledge_point'; targetId: string }) {
+  const { data: session } = useSession();
   const { mutate } = useRecordHistory();
   useEffect(() => {
-    if (!targetId) return;
+    if (!session || !targetId) return;
     mutate({ target_type: targetType, target_id: targetId });
-  }, [targetType, targetId, mutate]);
+  }, [session, targetType, targetId, mutate]);
   return null;
 }

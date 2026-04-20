@@ -40,7 +40,7 @@ describe('askQuestion', () => {
     vi.unstubAllEnvs();
     vi.unstubAllGlobals();
     vi.stubEnv('NEXT_PUBLIC_API_BASE_URL', 'http://test/v1');
-    useDeviceStore.setState({ deviceId: 'd-uuid', language: 'zh-CN' });
+    useDeviceStore.setState({ language: 'zh-CN' });
   });
 
   it('yields parsed events from a stream response', async () => {
@@ -64,7 +64,7 @@ describe('askQuestion', () => {
     expect(out[0].event).toBe('error');
   });
 
-  it('sends X-Device-Id header (qa endpoint accepts it optionally)', async () => {
+  it('does NOT send X-Device-Id header (QA endpoint is anonymous, header dropped Phase 4)', async () => {
     let captured: RequestInit | null = null;
     const sse = 'event: done\ndata: {}\n\n';
     vi.stubGlobal('fetch', vi.fn(async (_url: string, init: RequestInit) => {
@@ -73,7 +73,9 @@ describe('askQuestion', () => {
     }));
 
     for await (const _ of askQuestion({ question: 'hi' })) { /* drain */ }
-    expect((captured!.headers as Record<string, string>)['X-Device-Id']).toBe('d-uuid');
-    expect((captured!.headers as Record<string, string>)['Accept']).toBe('text/event-stream');
+    const headers = captured!.headers as Record<string, string>;
+    expect(headers['X-Device-Id']).toBeUndefined();
+    expect(headers['Accept']).toBe('text/event-stream');
+    expect(headers['Accept-Language']).toBe('zh-CN');
   });
 });
