@@ -1,5 +1,6 @@
 import { API_BASE_URL, API_TIMEOUT } from '@/constants/config';
 import { useDeviceStore } from '@/stores/deviceStore';
+import { useAuthStore } from '@/stores/authStore';
 import { ensureFreshJwt } from '@/lib/jwt-refresh';
 import type { ApiError } from './types';
 
@@ -70,6 +71,9 @@ async function request<T>(
       signal: controller.signal,
     });
     if (!res.ok) {
+      if (res.status === 401) {
+        useAuthStore.getState().clear();
+      }
       const errBody = await res.json().catch(() => ({
         error: { code: 'UNKNOWN', message: '请求失败' },
       }));

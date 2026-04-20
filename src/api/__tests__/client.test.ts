@@ -54,6 +54,24 @@ describe('apiClient', () => {
     expect((captured!.headers as Record<string, string>)['X-Device-Id']).toBeUndefined();
   });
 
+  it('clears authStore when server returns 401 (jwt rejected by backend)', async () => {
+    const futureExp = Math.floor(Date.now() / 1000) + 600;
+    useAuthStore.getState().setJwt(fakeJwt(futureExp), futureExp);
+    useAuthStore.getState().setSession(
+      { id: 's', userId: 'u', expiresAt: 0 },
+      { id: 'u', email: 'e@x', name: '', username: null, emailVerified: true, role: 'user', isActive: true },
+    );
+
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(
+      JSON.stringify({ error: { code: 'TOKEN_EXPIRED', message: '过期' } }),
+      { status: 401 },
+    )));
+
+    await expect(apiClient.get('/favorites')).rejects.toBeInstanceOf(ApiClientError);
+    expect(useAuthStore.getState().jwt).toBeNull();
+    expect(useAuthStore.getState().user).toBeNull();
+  });
+
   it('throws UNAUTHENTICATED 401 when authed endpoint called without jwt', async () => {
     vi.stubGlobal(
       'fetch',
