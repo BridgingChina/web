@@ -1,0 +1,26 @@
+{
+  "common": {
+    "loading": "加载中",
+    "error": "出错了",
+    "retry": "重试",
+    "save": "保存",
+    "cancel": "取消",
+    "confirm": "确认",
+    "favorite": "收藏",
+    "review": "复习",
+    "history": "浏览历史",
+    "sign_in": "登录",
+    "sign_up": "注册",
+    "sign_out": "退出登录",
+    "settings": "设置",
+    "no_results": "没有更多结果",
+    "search": "搜索"
+  },
+  "nav": {
+    "home": "首页",
+    "bridges": "桥梁",
+    "knowledge": "知识点",
+    "map": "地图",
+    "me": "我的"
+  }
+}
