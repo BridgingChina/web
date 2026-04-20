@@ -85,7 +85,12 @@
       "detail": { "label": "Details", "hint": "Point-by-point explanation" },
       "deep_dive": { "label": "Deep dive", "hint": "Comparisons · debates · extensions" },
       "sources": { "label": "Sources", "hint": "Traceable citations" }
-    }
+    },
+    "evidence": {
+      "show_original": "Show original Chinese",
+      "hide_original": "Hide original"
+    },
+    "degraded_notice": "Fallback to Chinese answer — English generation temporarily unavailable."
   },
   "errors": {
     "app_title": "Service temporarily unavailable",

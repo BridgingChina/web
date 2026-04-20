@@ -41,6 +41,9 @@ describe('askQuestion', () => {
     vi.unstubAllGlobals();
     vi.stubEnv('NEXT_PUBLIC_API_BASE_URL', 'http://test/v1');
     useDeviceStore.setState({ language: 'zh-CN' });
+    // Clear any cookie a prior test set so resolveLocale() falls through to
+    // the deviceStore default.
+    document.cookie = 'NEXT_LOCALE=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
   });
 
   it('yields parsed events from a stream response', async () => {
@@ -77,5 +80,19 @@ describe('askQuestion', () => {
     expect(headers['X-Device-Id']).toBeUndefined();
     expect(headers['Accept']).toBe('text/event-stream');
     expect(headers['Accept-Language']).toBe('zh-CN');
+  });
+
+  it('sends Accept-Language: en-US when the NEXT_LOCALE cookie is en-US', async () => {
+    document.cookie = 'NEXT_LOCALE=en-US; path=/';
+    let captured: RequestInit | null = null;
+    const sse = 'event: done\ndata: {}\n\n';
+    vi.stubGlobal('fetch', vi.fn(async (_url: string, init: RequestInit) => {
+      captured = init;
+      return new Response(sse, { status: 200 });
+    }));
+
+    for await (const _ of askQuestion({ question: 'hi' })) { /* drain */ }
+    const headers = captured!.headers as Record<string, string>;
+    expect(headers['Accept-Language']).toBe('en-US');
   });
 });

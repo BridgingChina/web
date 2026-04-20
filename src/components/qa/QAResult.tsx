@@ -6,9 +6,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
+import { EvidenceCard } from './EvidenceCard';
 
 export function QAResult() {
-  const { status, outline, details, deepDive, sources, error } = useQAStore();
+  const { status, outline, details, deepDive, sources, error, degraded } = useQAStore();
   const router = useRouter();
   const t = useTranslations('qa');
   const tErrors = useTranslations('errors');
@@ -62,6 +63,15 @@ export function QAResult() {
 
   return (
     <div className="space-y-6">
+      {degraded && (
+        <div
+          role="status"
+          className="rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900"
+        >
+          {t('degraded_notice')}
+        </div>
+      )}
+
       {outline && outline.key_points.length > 0 && (
         <section className="space-y-3">
           <h3 className="text-sm font-medium text-muted-foreground">{t('outline_label')}</h3>
@@ -139,11 +149,10 @@ export function QAResult() {
       {sources && sources.sources.length > 0 && (
         <section>
           <h3 className="mb-2 text-sm font-medium text-muted-foreground">{t('sources_label')}</h3>
-          <ol className="space-y-2 text-xs text-muted-foreground">
+          <ol className="space-y-2">
             {sources.sources.map((s, i) => (
-              <li key={s.id}>
-                <span className="text-blue-600">[{i + 1}]</span> {s.title}
-                {s.author ? ` · ${s.author}` : ''} {s.location ? ` · ${s.location}` : ''}
+              <li key={s.chunk_id ?? s.id}>
+                <EvidenceCard source={s} index={i + 1} />
               </li>
             ))}
           </ol>

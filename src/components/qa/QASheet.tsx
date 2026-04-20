@@ -19,6 +19,7 @@ import {
 import { cn } from '@/lib/utils';
 import type {
   QAOutlineEvent, QADetailEvent, QADeepDiveEvent, QASourcesEvent, QAErrorEvent,
+  QAStartedEvent, QADoneEvent,
 } from '@/api/types';
 
 const STEP_ICONS = {
@@ -33,7 +34,8 @@ const EXAMPLE_KEYS = ['zhaozhou_arch', 'song_stone', 'hongqiao_joinery'] as cons
 
 export function QASheet() {
   const { isOpen, close, context, status,
-    setQuestion, setStatus, setOutline, addDetail, setDeepDive, setSources, setError,
+    setQuestion, setStatus, setStarted, setOutline, addDetail, setDeepDive, setSources,
+    setDone, setError,
   } = useQAStore();
   const [text, setText] = useState('');
   const busy = status === 'connecting' || status === 'streaming';
@@ -52,12 +54,12 @@ export function QASheet() {
         context: context.type ? { type: context.type, id: context.id, filters: context.filters } : undefined,
       })) {
         switch (ev.event) {
-          case 'started': break;
+          case 'started':   setStarted(ev.data as QAStartedEvent); break;
           case 'outline':   setOutline(ev.data as QAOutlineEvent); break;
           case 'detail':    addDetail(ev.data as QADetailEvent); break;
           case 'deep_dive': setDeepDive(ev.data as QADeepDiveEvent); break;
           case 'sources':   setSources(ev.data as QASourcesEvent); break;
-          case 'done':      setStatus('done'); break;
+          case 'done':      setDone(ev.data as QADoneEvent); break;
           case 'error':     setError(ev.data as QAErrorEvent); break;
           case 'ping': break;
         }

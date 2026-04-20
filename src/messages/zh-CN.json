@@ -85,7 +85,12 @@
       "detail": { "label": "详情", "hint": "逐条展开说明" },
       "deep_dive": { "label": "深挖", "hint": "对比 · 争议 · 延伸" },
       "sources": { "label": "来源", "hint": "可回溯的引用" }
-    }
+    },
+    "evidence": {
+      "show_original": "查看中文原文",
+      "hide_original": "收起原文"
+    },
+    "degraded_notice": "已降级到中文回答 —— 英文生成暂时不可用。"
   },
   "errors": {
     "app_title": "服务暂时不可用",
