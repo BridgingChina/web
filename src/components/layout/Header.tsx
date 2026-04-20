@@ -1,27 +1,30 @@
 'use client';
-import Link from 'next/link';
 import { Search, MessageCircleQuestion } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link, usePathname } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { useQAStore } from '@/stores/qaStore';
-import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
-const NAV = [
-  { href: '/knowledge', label: '知识图谱' },
-  { href: '/map', label: '地图' },
-  { href: '/recognize', label: '识景' },
-  { href: '/search', label: '搜索' },
-  { href: '/me', label: '我的' },
+const NAV: { href: string; labelKey: 'knowledge_graph' | 'map' | 'recognize' | 'search' | 'me' }[] = [
+  { href: '/knowledge', labelKey: 'knowledge_graph' },
+  { href: '/map', labelKey: 'map' },
+  { href: '/recognize', labelKey: 'recognize' },
+  { href: '/search', labelKey: 'search' },
+  { href: '/me', labelKey: 'me' },
 ];
 
 export function Header() {
   const open = useQAStore((s) => s.open);
   const pathname = usePathname();
+  const tNav = useTranslations('nav');
+  const tHeader = useTranslations('header');
+  const tCommon = useTranslations('common');
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
       <div className="container mx-auto flex h-14 items-center gap-6 px-4">
-        <Link href="/" className="font-semibold tracking-tight">桥知 BridgingChina</Link>
+        <Link href="/" className="font-semibold tracking-tight">{tHeader('brand')}</Link>
         <nav className="flex gap-1 text-sm">
           {NAV.map((n) => {
             const active = pathname.startsWith(n.href);
@@ -36,17 +39,17 @@ export function Header() {
                     : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
                 )}
               >
-                {n.label}
+                {tNav(n.labelKey)}
               </Link>
             );
           })}
         </nav>
         <div className="ml-auto flex items-center gap-2">
           <Link href="/search">
-            <Button variant="ghost" size="icon" aria-label="搜索"><Search className="h-4 w-4" /></Button>
+            <Button variant="ghost" size="icon" aria-label={tCommon('search')}><Search className="h-4 w-4" /></Button>
           </Link>
           <Button variant="outline" size="sm" onClick={() => open({ type: null })}>
-            <MessageCircleQuestion className="mr-2 h-4 w-4" />提问
+            <MessageCircleQuestion className="mr-2 h-4 w-4" />{tCommon('ask')}
           </Button>
         </div>
       </div>

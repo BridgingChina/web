@@ -14,13 +14,55 @@
     "sign_out": "Sign out",
     "settings": "Settings",
     "no_results": "No results",
-    "search": "Search"
+    "search": "Search",
+    "ask": "Ask",
+    "empty": "None"
   },
   "nav": {
     "home": "Home",
     "bridges": "Bridges",
     "knowledge": "Knowledge",
+    "knowledge_graph": "Knowledge Graph",
     "map": "Map",
+    "recognize": "Recognize",
+    "search": "Search",
     "me": "Me"
+  },
+  "header": {
+    "brand": "桥知 BridgingChina"
+  },
+  "home": {
+    "hero_title": "Millennia of bridges,\na single thought away",
+    "hero_subtitle": "A Knowledge Graph of Ancient Chinese Bridges · 桥知 BridgingChina",
+    "cta": "Start exploring"
+  },
+  "bridge_detail": {
+    "aliases_label": "Also known as: {aliases}",
+    "locate_on_map": "Show on map",
+    "archive": "Bridge archive",
+    "sources_summary": "{total} sources total (showing {shown})",
+    "related_kps": "Related knowledge points"
+  },
+  "qa": {
+    "title": "AI Q&A",
+    "focused": "Focused on",
+    "intro": "Answers unfold in four stages: outline → details → deep dive → sources",
+    "input_placeholder": "Type your question. Enter to send · Shift+Enter for a new line",
+    "answering": "Answering",
+    "try": "Try",
+    "searching": "Searching the literature and composing an answer",
+    "response_structure": "Response structure",
+    "network_error": "Network error, please try again later",
+    "examples": {
+      "ex1": "What are the structural advantages of Zhaozhou Bridge's open-spandrel arch?",
+      "ex2": "Why did the Song dynasty favor stone arch bridges?",
+      "ex3": "How does the mortise-and-tenon joinery of Hongqiao transfer load?"
+    },
+    "steps": {
+      "outline": { "label": "Outline", "hint": "Key conclusions first" },
+      "detail": { "label": "Details", "hint": "Point-by-point explanation" },
+      "deep_dive": { "label": "Deep dive", "hint": "Comparisons · debates · extensions" },
+      "sources": { "label": "Sources", "hint": "Traceable citations" }
+    }
   }
 }

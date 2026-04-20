@@ -1,7 +1,9 @@
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 
 export default function LandingPage() {
+  const t = useTranslations('home');
   return (
     <section
       className="relative -mx-4 -my-6 flex min-h-[calc(100dvh-3.5rem)] items-center justify-center overflow-hidden"
@@ -19,14 +21,14 @@ export default function LandingPage() {
         }}
       />
       <div className="relative flex flex-col items-center px-6 text-center">
-        <h1 className="font-serif text-[clamp(48px,9vw,112px)] font-bold leading-[1.05] tracking-[0.12em] text-slate-50">
-          千年古桥　一念即达
+        <h1 className="whitespace-pre-line font-serif text-[clamp(48px,9vw,112px)] font-bold leading-[1.05] tracking-[0.12em] text-slate-50">
+          {t('hero_title')}
         </h1>
         <p className="mt-6 text-sm tracking-[0.3em] text-slate-300/80 md:text-base">
-          中国古桥知识图谱 · 桥知 BridgingChina
+          {t('hero_subtitle')}
         </p>
         <Link href="/knowledge" className="mt-12">
-          <Button size="lg" className="focus-visible:ring-white/70 focus-visible:border-white">开始探索</Button>
+          <Button size="lg" className="focus-visible:ring-white/70 focus-visible:border-white">{t('cta')}</Button>
         </Link>
       </div>
     </section>
