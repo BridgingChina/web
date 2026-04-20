@@ -58,3 +58,6 @@ test-results/
 .claude/
 .playwright-mcp/
 /map-*.png
+
+# git worktrees (isolated dev workspaces)
+/.worktrees/
