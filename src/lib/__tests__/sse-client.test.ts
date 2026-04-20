@@ -40,7 +40,7 @@ describe('askQuestion', () => {
     vi.unstubAllEnvs();
     vi.unstubAllGlobals();
     vi.stubEnv('NEXT_PUBLIC_API_BASE_URL', 'http://test/v1');
-    useDeviceStore.setState({ deviceId: '', language: 'zh-CN' });
+    useDeviceStore.setState({ language: 'zh-CN' });
   });
 
   it('yields parsed events from a stream response', async () => {
