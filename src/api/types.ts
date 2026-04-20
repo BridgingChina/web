@@ -89,6 +89,19 @@ export interface Source {
   author?: string;
   excerpt?: string;
   location?: string;
+  /**
+   * English summary of the source chunk. Only present when the request locale
+   * is `en-US` and the backend LLM generation succeeded. UI should prefer
+   * `text_en` in English locale and fall back to `text_zh` / `excerpt` when
+   * missing (e.g. degraded responses).
+   */
+  text_en?: string;
+  /** Raw Chinese chunk text — always present. */
+  text_zh?: string;
+  /** Optional stable chunk identifier (distinct from citation `source_id`). */
+  chunk_id?: string;
+  source_id?: string;
+  source_title?: string;
 }
 
 export interface KnowledgePointDetail {
@@ -227,7 +240,39 @@ export interface QADeepDiveEvent {
 
 export interface QASourcesEvent { sources: Source[]; }
 
+/**
+ * Fired at stream start to communicate the locale the backend decided to
+ * answer in. For `en-US` requests the backend may also echo the original
+ * Chinese translation of the query for debugging.
+ */
+export interface QAStartedEvent {
+  locale: 'zh-CN' | 'en-US';
+  question_zh?: string;
+}
+
+/**
+ * Fired when the stream finishes. Extends the legacy `{qa_id}` shape with
+ * Phase 4 i18n fields:
+ * - `locale` — what the backend actually produced (may differ on fallback)
+ * - `degraded` — true when English generation failed and the answer fell
+ *   back to Chinese; UI shows an inline amber banner when set
+ * - `reason` — optional machine-readable explanation (e.g.
+ *   `translate_answer_failed`) for logging / analytics
+ */
+export interface QADoneEvent {
+  qa_id?: string;
+  locale?: 'zh-CN' | 'en-US';
+  degraded?: boolean;
+  reason?: string | null;
+}
+
 export interface QAErrorEvent {
+  /**
+   * Machine-readable error code. Phase 4 may additionally surface
+   * `TRANSLATE_TIMEOUT` / `GENERATE_FAILED` on top of the legacy codes; the
+   * UI layer resolves the copy via `t(\`errors.\${code}\`)` and falls back
+   * to `errors.UNKNOWN` when the key is missing.
+   */
   code: string;
   message: string;
   /** Optional HTTP status passed through from the transport layer (SSE client). */
