@@ -6,11 +6,10 @@ import { Button } from '@/components/ui/button';
 import { useQAStore } from '@/stores/qaStore';
 import { cn } from '@/lib/utils';
 
-const NAV: { href: string; labelKey: 'knowledge_graph' | 'map' | 'recognize' | 'search' | 'me' }[] = [
+const NAV: { href: string; labelKey: 'knowledge_graph' | 'map' | 'recognize' | 'me' }[] = [
   { href: '/knowledge', labelKey: 'knowledge_graph' },
   { href: '/map', labelKey: 'map' },
   { href: '/recognize', labelKey: 'recognize' },
-  { href: '/search', labelKey: 'search' },
   { href: '/me', labelKey: 'me' },
 ];
 
@@ -46,7 +45,9 @@ export function Header() {
         </nav>
         <div className="ml-auto flex items-center gap-2">
           <Link href="/search">
-            <Button variant="ghost" size="icon" aria-label={tCommon('search')}><Search className="h-4 w-4" /></Button>
+            <Button variant="outline" size="sm">
+              <Search className="mr-2 h-4 w-4" />{tCommon('search')}
+            </Button>
           </Link>
           <Button variant="outline" size="sm" onClick={() => open({ type: null })}>
             <MessageCircleQuestion className="mr-2 h-4 w-4" />{tCommon('ask')}
