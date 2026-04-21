@@ -95,4 +95,27 @@ describe('askQuestion', () => {
     const headers = captured!.headers as Record<string, string>;
     expect(headers['Accept-Language']).toBe('en-US');
   });
+
+  it('forces Accept-Language: zh-CN when NEXT_PUBLIC_I18N_ENABLED is false', async () => {
+    // Phase 5 rollback: even if the cookie says en-US, the SSE client must
+    // fall back to zh-CN when the kill switch is engaged.
+    document.cookie = 'NEXT_LOCALE=en-US; path=/';
+    const prev = process.env.NEXT_PUBLIC_I18N_ENABLED;
+    process.env.NEXT_PUBLIC_I18N_ENABLED = 'false';
+
+    let captured: RequestInit | null = null;
+    const sse = 'event: done\ndata: {}\n\n';
+    vi.stubGlobal('fetch', vi.fn(async (_url: string, init: RequestInit) => {
+      captured = init;
+      return new Response(sse, { status: 200 });
+    }));
+
+    try {
+      for await (const _ of askQuestion({ question: 'hi' })) { /* drain */ }
+      const headers = captured!.headers as Record<string, string>;
+      expect(headers['Accept-Language']).toBe('zh-CN');
+    } finally {
+      process.env.NEXT_PUBLIC_I18N_ENABLED = prev;
+    }
+  });
 });

@@ -26,8 +26,14 @@ function readLocaleCookie(): string | null {
  * to flip a separate deviceStore toggle. Falls back to `deviceStore.language`
  * (normalised to the BCP-47 form) so that any legacy caller that sets the
  * store still gets a sensible header.
+ *
+ * Phase 5 rollback flag: when `NEXT_PUBLIC_I18N_ENABLED === 'false'` we hard
+ * force zh-CN regardless of cookies. Paired with the backend's
+ * `settings.i18n_enabled` — flip both and the en-US path is completely
+ * disabled without shipping code.
  */
 function resolveLocale(): string {
+  if (process.env.NEXT_PUBLIC_I18N_ENABLED === 'false') return DEFAULT_LOCALE;
   const cookie = readLocaleCookie();
   if (cookie) return cookie;
   const { language } = useDeviceStore.getState();
