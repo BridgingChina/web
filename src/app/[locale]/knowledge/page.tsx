@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { MainlineNav } from '@/components/knowledge/MainlineNav';
 import { KnowledgeTreeWeb } from '@/components/knowledge/KnowledgeTreeWeb';
+import { RecentHistoryAside } from '@/components/knowledge/RecentHistoryAside';
 
 export default function HomePage() {
   const [selectedLineId, setSelectedLineId] = useState<string | null>(null);
@@ -21,10 +22,7 @@ export default function HomePage() {
       </section>
 
       <aside className="hidden lg:block lg:sticky lg:top-20 lg:self-start">
-        <div className="rounded-md border bg-card p-4">
-          <h2 className="mb-2 text-sm font-medium">{t('recent_views_title')}</h2>
-          <p className="text-xs text-muted-foreground">{t('recent_views_hint')}</p>
-        </div>
+        <RecentHistoryAside />
       </aside>
     </div>
   );
