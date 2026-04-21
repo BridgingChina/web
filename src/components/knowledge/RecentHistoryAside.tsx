@@ -7,6 +7,13 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import type { HistoryItem } from '@/api/types';
 
+const AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL ?? 'https://auth.bridgingchina.net';
+
+function buildLoginHref(): string {
+  if (typeof window === 'undefined') return `${AUTH_URL}/auth/login`;
+  return `${AUTH_URL}/auth/login?callbackURL=${encodeURIComponent(window.location.href)}`;
+}
+
 const MAX_ITEMS = 6;
 
 export function RecentHistoryAside() {
@@ -33,9 +40,9 @@ export function RecentHistoryAside() {
         <p className="text-xs text-muted-foreground">
           {t.rich('recent_login_prompt', {
             login: (chunks) => (
-              <Link href="/sign-in" className="underline">
+              <a href={buildLoginHref()} className="underline">
                 {chunks}
-              </Link>
+              </a>
             ),
           })}
         </p>
