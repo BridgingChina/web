@@ -8,7 +8,12 @@ const AMapContainer = dynamic(
   () => import('@/components/map/AMapContainer').then((m) => m.AMapContainer),
   {
     ssr: false,
-    loading: () => <div className="h-full w-full animate-pulse bg-muted" />,
+    loading: () => (
+      <div
+        className="h-full w-full animate-pulse"
+        style={{ background: 'var(--stone-grey)' }}
+      />
+    ),
   },
 );
 
@@ -23,11 +28,17 @@ function MapContent() {
   );
 
   return (
-    <div className="grid h-[calc(100dvh-7rem)] grid-cols-[1fr_320px] gap-4">
-      <div className="overflow-hidden rounded-md border bg-muted">
+    <div className="grid h-[calc(100dvh-7rem)] grid-cols-1 gap-4 lg:grid-cols-[1fr_320px]">
+      <div
+        className="overflow-hidden rounded-lg border"
+        style={{ borderColor: 'var(--stone-grey)' }}
+      >
         <AMapContainer onSelectBridge={handleSelect} onCountsChange={handleCounts} />
       </div>
-      <div className="overflow-hidden rounded-md border">
+      <div
+        className="overflow-hidden rounded-lg border"
+        style={{ borderColor: 'var(--stone-grey)' }}
+      >
         <ResultDrawer
           selectedBridgeId={selectedBridgeId}
           pointsCount={counts.points}
@@ -40,7 +51,14 @@ function MapContent() {
 
 export default function MapPage() {
   return (
-    <Suspense fallback={<div className="h-[calc(100dvh-7rem)] animate-pulse bg-muted" />}>
+    <Suspense
+      fallback={
+        <div
+          className="h-[calc(100dvh-7rem)] animate-pulse rounded-lg"
+          style={{ background: 'var(--stone-grey)' }}
+        />
+      }
+    >
       <MapContent />
     </Suspense>
   );

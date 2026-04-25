@@ -30,9 +30,16 @@ function MeSkeleton() {
 function LoginPrompt() {
   const t = useTranslations('me');
   return (
-    <div className="mx-auto max-w-md space-y-4 rounded-lg border p-8 text-center">
-      <h2 className="text-lg font-semibold">{t('login_required_title')}</h2>
-      <p className="text-sm text-muted-foreground">{t('login_required_description')}</p>
+    <div
+      className="mx-auto max-w-md space-y-5 rounded-lg border p-8 text-center"
+      style={{ background: 'var(--rice-paper)', borderColor: 'var(--stone-grey)' }}
+    >
+      <h2 className="font-sans text-lg font-semibold text-foreground">
+        {t('login_required_title')}
+      </h2>
+      <p className="font-sans text-sm text-muted-foreground">
+        {t('login_required_description')}
+      </p>
       <a className={buttonVariants({ variant: 'default' })} href={buildLoginHref()}>
         {t('go_sign_in')}
       </a>
@@ -57,10 +64,15 @@ export default function MePage() {
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">{tMe('title')}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{greeting}</p>
+        {/* Page title: sans (Title style) — narrator, not subject */}
+        <h1 className="font-sans text-2xl font-semibold tracking-tight text-foreground">
+          {tMe('title')}
+        </h1>
+        <p className="mt-1 font-sans text-sm text-muted-foreground">{greeting}</p>
       </div>
+
       <TodayReviewCard />
+
       <Tabs defaultValue="favorites">
         <TabsList>
           <TabsTrigger value="favorites">{tMe('tabs.favorites')}</TabsTrigger>
@@ -71,10 +83,16 @@ export default function MePage() {
         <TabsContent value="history" className="pt-4"><HistoryList /></TabsContent>
         <TabsContent value="settings" className="pt-4"><SettingsPanel /></TabsContent>
       </Tabs>
-      <section className="mt-8 border-t pt-6">
-        <h2 className="text-lg font-medium mb-3">{tCommon('settings')}</h2>
+
+      <section
+        className="mt-8 pt-6"
+        style={{ borderTop: '1px solid var(--stone-grey)' }}
+      >
+        <h2 className="mb-3 font-sans text-base font-semibold text-foreground">
+          {tCommon('settings')}
+        </h2>
         <div className="flex items-center gap-4">
-          <span className="text-sm text-muted-foreground">{tCommon('language_label')}</span>
+          <span className="font-sans text-sm text-muted-foreground">{tCommon('language_label')}</span>
           <LanguageSwitcher />
         </div>
       </section>

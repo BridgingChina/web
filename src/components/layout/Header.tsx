@@ -21,10 +21,18 @@ export function Header() {
   const tCommon = useTranslations('common');
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/80">
       <div className="container mx-auto flex h-14 items-center gap-6 px-4">
-        <Link href="/" className="font-semibold tracking-tight">{tHeader('brand')}</Link>
-        <nav className="flex gap-1 text-sm">
+        {/* Brand: serif + songci-celadon — Songti Reserve Rule: only the brand name, not nav */}
+        <Link
+          href="/"
+          className="font-serif text-lg font-semibold tracking-wide transition-colors duration-150"
+          style={{ color: 'var(--songci-celadon)' }}
+        >
+          {tHeader('brand')}
+        </Link>
+
+        <nav className="flex gap-0.5 text-sm" aria-label="Main navigation">
           {NAV.map((n) => {
             const active = pathname.startsWith(n.href);
             return (
@@ -32,25 +40,38 @@ export function Header() {
                 key={n.href}
                 href={n.href}
                 className={cn(
-                  'rounded-md px-3 py-1.5 transition-colors',
+                  'rounded-md px-3 py-1.5 font-medium transition-colors duration-150',
                   active
-                    ? 'bg-accent text-accent-foreground'
-                    : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                    ? 'bg-secondary text-foreground'
+                    : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground',
                 )}
+                style={active ? { color: 'var(--songci-celadon-deep)' } : undefined}
               >
                 {tNav(n.labelKey)}
               </Link>
             );
           })}
         </nav>
-        <div className="ml-auto flex items-center gap-2">
+
+        <div className="ml-auto flex items-center gap-1">
           <Link href="/search">
-            <Button variant="outline" size="sm">
-              <Search className="mr-2 h-4 w-4" />{tCommon('search')}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2 text-muted-foreground hover:text-foreground"
+            >
+              <Search className="h-4 w-4" />
+              <span className="hidden sm:inline">{tCommon('search')}</span>
             </Button>
           </Link>
-          <Button variant="outline" size="sm" onClick={() => open({ type: null })}>
-            <MessageCircleQuestion className="mr-2 h-4 w-4" />{tCommon('ask')}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-2 text-muted-foreground hover:text-foreground"
+            onClick={() => open({ type: null })}
+          >
+            <MessageCircleQuestion className="h-4 w-4" />
+            <span className="hidden sm:inline">{tCommon('ask')}</span>
           </Button>
         </div>
       </div>

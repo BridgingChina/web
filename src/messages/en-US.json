@@ -193,6 +193,7 @@
   },
   "flashcard": {
     "page_title": "{name} · Flashcards",
+    "context_label": "Flashcard review",
     "card_type_concept": "Concept card",
     "card_type_identification": "Identification card",
     "tap_to_flip": "Tap to flip",

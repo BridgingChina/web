@@ -12,12 +12,19 @@ export default function HomePage() {
   return (
     <div className="grid gap-6 lg:grid-cols-[220px_1fr_280px]">
       <aside className="lg:sticky lg:top-20 lg:self-start">
-        <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">{t('mainlines_label')}</p>
+        <p className="mb-3 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          {t('mainlines_label')}
+        </p>
         <MainlineNav selectedId={selectedLineId} onSelect={setSelectedLineId} />
       </aside>
 
       <section>
-        <h1 className="mb-4 text-2xl font-semibold tracking-tight">{t('title')}</h1>
+        {/* Headline: serif for the "object being described" — knowledge system title */}
+        <h1
+          className="mb-6 font-serif text-[clamp(28px,4vw,40px)] font-semibold leading-[1.2] tracking-[0.02em] text-foreground"
+        >
+          {t('title')}
+        </h1>
         <KnowledgeTreeWeb selectedLineId={selectedLineId} />
       </section>
 

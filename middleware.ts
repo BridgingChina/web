@@ -38,6 +38,16 @@ function isProtected(pathname: string): boolean {
 const intlMiddleware = createIntlMiddleware(routing);
 
 export default function middleware(req: NextRequest) {
+  // Next.js 16 + next-intl 16 (Turbopack) 下根 URL "/" 偶发不被 intl
+  // middleware 主动 redirect，触发 "Missing <html>/<body> in root layout"
+  // 报错（root 没 layout，layout 在 [locale]/ 下）。显式兜底，确保 / 永远
+  // 走默认 locale。
+  if (req.nextUrl.pathname === '/') {
+    const url = req.nextUrl.clone();
+    url.pathname = `/${routing.defaultLocale}`;
+    return NextResponse.redirect(url, 302);
+  }
+
   // Phase 5 rollback: hard-redirect any /en-US/* path to /zh-CN/* when the
   // flag is off. Runs before next-intl so the intl middleware never sees an
   // en-US request and never issues a conflicting redirect.

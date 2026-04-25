@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import { useKnowledgePointDetail, useKnowledgePointBridges } from '@/api/hooks/useKnowledge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { MessageCircleQuestion, MapPin, Layers } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
@@ -37,32 +36,72 @@ export default function KnowledgePointPage() {
       <RecordHistoryOnMount targetType="knowledge_point" targetId={id} />
       <div className="grid gap-8 lg:grid-cols-[1fr_280px]">
         <article className="space-y-8">
-          <header className="space-y-3">
-            <div className="flex flex-wrap items-baseline gap-2 text-xs text-muted-foreground">
-              <Badge variant="secondary">{kp.line.name}</Badge>
-              <span>›</span>
+          <header className="space-y-4">
+            {/* Breadcrumb: sans-serif, muted — "the narrator", not "the subject" */}
+            <div className="flex flex-wrap items-center gap-1.5 font-sans text-xs text-muted-foreground">
+              <span
+                className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium"
+                style={{ borderColor: 'var(--stone-grey)', color: 'var(--ash)' }}
+              >
+                {kp.line.name}
+              </span>
+              <span className="text-muted-foreground/50">›</span>
               <span>{kp.category.name}</span>
             </div>
-            <h1 className="text-3xl font-semibold tracking-tight">{kp.name}</h1>
+
+            {/* H1: serif headline — the knowledge point IS the "object being described" */}
+            <h1
+              className="font-serif text-[clamp(28px,4vw,40px)] font-semibold leading-[1.2] tracking-[0.02em] text-foreground"
+            >
+              {kp.name}
+            </h1>
+
             {kp.aliases.length > 0 && (
-              <p className="text-sm text-muted-foreground">
+              <p className="font-sans text-sm text-muted-foreground">
                 {t('aliases_prefix', { aliases: kp.aliases.join(t('aliases_separator')) })}
               </p>
             )}
-            <div className="flex flex-wrap gap-2">
-              {kp.tags.map(tag => <Badge key={tag} variant="outline">{tag}</Badge>)}
-              <Badge variant="outline">{t('difficulty_label', { difficulty: kp.difficulty })}</Badge>
-            </div>
-            <div className="flex flex-wrap gap-2 pt-2">
+
+            {/* Tags: chip-tag style — pill, transparent, ash text, stone-grey border */}
+            {(kp.tags.length > 0 || kp.difficulty) && (
+              <div className="flex flex-wrap gap-1.5">
+                {kp.tags.map(tag => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center rounded-full border px-3 py-1 font-sans text-xs font-medium"
+                    style={{ borderColor: 'var(--stone-grey)', color: 'var(--ash)' }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+                <span
+                  className="inline-flex items-center rounded-full border px-3 py-1 font-sans text-xs font-medium"
+                  style={{ borderColor: 'var(--stone-grey)', color: 'var(--ash)' }}
+                >
+                  {t('difficulty_label', { difficulty: kp.difficulty })}
+                </span>
+              </div>
+            )}
+
+            <div className="flex flex-wrap gap-2 pt-1">
               <FavoriteButton targetType="knowledge_point" targetId={kp.id} />
-              <Button size="sm" variant="outline" onClick={() => openQA({ type: 'knowledge_point', id: kp.id, label: kp.name })}>
-                <MessageCircleQuestion className="mr-1.5 h-4 w-4" />{tCommon('ask')}
+              <Button
+                size="sm"
+                variant="ghost"
+                className="gap-1.5 text-muted-foreground hover:text-foreground"
+                onClick={() => openQA({ type: 'knowledge_point', id: kp.id, label: kp.name })}
+              >
+                <MessageCircleQuestion className="h-4 w-4" />{tCommon('ask')}
               </Button>
               <Link href={`/map?kp=${kp.id}`}>
-                <Button size="sm" variant="outline"><MapPin className="mr-1.5 h-4 w-4" />{t('locate_on_map')}</Button>
+                <Button size="sm" variant="ghost" className="gap-1.5 text-muted-foreground hover:text-foreground">
+                  <MapPin className="h-4 w-4" />{t('locate_on_map')}
+                </Button>
               </Link>
               <Link href={`/flashcards/${kp.id}`}>
-                <Button size="sm" variant="outline"><Layers className="mr-1.5 h-4 w-4" />{t('flashcards_entry')}</Button>
+                <Button size="sm" variant="ghost" className="gap-1.5 text-muted-foreground hover:text-foreground">
+                  <Layers className="h-4 w-4" />{t('flashcards_entry')}
+                </Button>
               </Link>
             </div>
           </header>
@@ -70,7 +109,8 @@ export default function KnowledgePointPage() {
           <Separator />
 
           <section>
-            <h2 className="mb-3 text-lg font-medium">
+            {/* Section headings: sans Title style — "narrator" not "subject" */}
+            <h2 className="mb-4 font-sans text-base font-semibold text-foreground">
               {t('points_summary', { count: kp.l0.key_points.length, bridges: kp.l0.typical_bridges_count })}
             </h2>
             <div className="space-y-2">
@@ -81,7 +121,7 @@ export default function KnowledgePointPage() {
           </section>
 
           <section>
-            <h2 className="mb-3 text-lg font-medium">{t('deep_dive_heading')}</h2>
+            <h2 className="mb-4 font-sans text-base font-semibold text-foreground">{t('deep_dive_heading')}</h2>
             <L2Section l2={kp.l2} sources={kp.sources} />
           </section>
 
@@ -89,14 +129,25 @@ export default function KnowledgePointPage() {
         </article>
 
         <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
-          <div className="rounded-md border bg-card p-4">
-            <h2 className="mb-2 text-sm font-medium">{t('typical_bridges', { count: bridges.length })}</h2>
-            {bridges.length === 0 && <p className="text-xs text-muted-foreground">{tCommon('empty')}</p>}
-            <ul className="space-y-1.5 text-sm">
+          {/* Aside panel: bg-card (rice-paper), 1px stone-grey border, rounded-lg */}
+          <div className="rounded-lg border bg-card p-4" style={{ borderColor: 'var(--stone-grey)' }}>
+            <h2 className="mb-3 font-sans text-sm font-medium text-foreground">
+              {t('typical_bridges', { count: bridges.length })}
+            </h2>
+            {bridges.length === 0 && (
+              <p className="font-sans text-xs text-muted-foreground">{tCommon('empty')}</p>
+            )}
+            <ul className="space-y-2 font-sans text-sm">
               {bridges.slice(0, 8).map(b => (
-                <li key={b.id}>
-                  <Link href={`/bridges/${b.id}`} className="hover:underline">{b.name}</Link>
-                  <span className="ml-1 text-xs text-muted-foreground">{b.region}</span>
+                <li key={b.id} className="flex items-baseline gap-1.5">
+                  <Link
+                    href={`/bridges/${b.id}`}
+                    className="font-medium text-foreground transition-colors hover:text-foreground/70"
+                    style={{ textDecorationColor: 'var(--stone-grey)' }}
+                  >
+                    {b.name}
+                  </Link>
+                  <span className="text-xs text-muted-foreground">{b.region}</span>
                 </li>
               ))}
             </ul>
