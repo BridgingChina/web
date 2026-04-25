@@ -157,7 +157,7 @@ terms:
   - zh: 近现代
     en: Modern
     context: era
-  # ───── taxonomy lvl1（四大主线）─────
+  # ───── taxonomy lvl1（五大主线）─────
   - zh: 形制与技术
     en: Form and Technology
     context: taxonomy_lvl1
@@ -169,6 +169,9 @@ terms:
     context: taxonomy_lvl1
   - zh: 历史与演变
     en: History and Evolution
+    context: taxonomy_lvl1
+  - zh: 艺术与文化
+    en: Art and Culture
     context: taxonomy_lvl1
   # ───── UI 状态（ui_state）─────
   - zh: 加载中
