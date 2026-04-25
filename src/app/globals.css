@@ -4,13 +4,19 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ─────────────────────────────────────────────────────────────────
+ * 桥知 BridgingChina · Design System tokens
+ * Source of truth: /Users/uu/Documents/Coding/4C2026/DESIGN.md
+ * 不允许在本文件追加品牌色变量；新增需先回 DESIGN.md。
+ * ───────────────────────────────────────────────────────────────── */
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-geist-sans), "Inter", system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: var(--font-geist-mono), "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-serif: "Songti SC", "STSong", "SimSun", "Noto Serif CJK SC", Georgia, serif;
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-serif);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -40,82 +46,106 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  --radius-2xl: 18px;
+  --radius-3xl: 24px;
+  --radius-4xl: 32px;
+  --radius-pill: 9999px;
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  /* Brand */
+  --songci-celadon: #2C5F5D;
+  --songci-celadon-deep: #1F4A48;
+  --songci-celadon-soft: #5C8583;
+  --vermilion: #B73E3E;
+  --vermilion-deep: #9E2929;
+  --vermilion-soft: #D9847E;
+  --yellow-hemp: #C9A875;
+  --distant-mountain: #5A6F80;
+  --old-plum: #6B4A5C;
+  /* Neutral · 文物色调（向暖偏移） */
+  --xuan-white: #F8F5EE;
+  --rice-paper: #FBF9F4;
+  --stone-grey: #E5E1D8;
+  --stone-grey-deep: #9C9890;
+  --ash: #6E6B65;
+  --ink-black-soft: #3A3A38;
+  --ink-black: #1F1F1E;
+
+  /* shadcn 标准槽位 → 桥知 token 投影 */
+  --background: var(--xuan-white);
+  --foreground: var(--ink-black);
+  --card: var(--rice-paper);
+  --card-foreground: var(--ink-black);
+  --popover: var(--rice-paper);
+  --popover-foreground: var(--ink-black);
+  --primary: var(--ink-black);
+  --primary-foreground: var(--xuan-white);
+  --secondary: var(--stone-grey);
+  --secondary-foreground: var(--ink-black);
+  --muted: var(--stone-grey);
+  --muted-foreground: var(--ash);
+  --accent: var(--songci-celadon);
+  --accent-foreground: var(--xuan-white);
+  --destructive: var(--vermilion-deep);
+  --border: var(--stone-grey);
+  --input: var(--stone-grey);
+  --ring: var(--songci-celadon);
+  /* Data viz · 五色同时代调性，废弃 Tailwind 默认彩虹 */
+  --chart-1: var(--songci-celadon);
+  --chart-2: var(--vermilion);
+  --chart-3: var(--yellow-hemp);
+  --chart-4: var(--distant-mountain);
+  --chart-5: var(--old-plum);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Sidebar */
+  --sidebar: var(--rice-paper);
+  --sidebar-foreground: var(--ash);
+  --sidebar-primary: var(--songci-celadon-deep);
+  --sidebar-primary-foreground: var(--xuan-white);
+  --sidebar-accent: var(--stone-grey);
+  --sidebar-accent-foreground: var(--songci-celadon-deep);
+  --sidebar-border: var(--stone-grey);
+  --sidebar-ring: var(--songci-celadon);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Dark mode · 仍走宋瓷青/朱砂调性，不退回纯灰 */
+  --background: #14201F;          /* 深宋瓷青 + 深墨混 */
+  --foreground: var(--xuan-white);
+  --card: #1A2827;
+  --card-foreground: var(--xuan-white);
+  --popover: #1A2827;
+  --popover-foreground: var(--xuan-white);
+  --primary: var(--xuan-white);
+  --primary-foreground: var(--ink-black);
+  --secondary: #243433;
+  --secondary-foreground: var(--xuan-white);
+  --muted: #243433;
+  --muted-foreground: var(--stone-grey-deep);
+  --accent: var(--songci-celadon-soft);
+  --accent-foreground: var(--ink-black);
+  --destructive: var(--vermilion-soft);
+  --border: rgba(248, 245, 238, 0.10);
+  --input: rgba(248, 245, 238, 0.14);
+  --ring: var(--songci-celadon-soft);
+  --chart-1: var(--songci-celadon-soft);
+  --chart-2: var(--vermilion-soft);
+  --chart-3: var(--yellow-hemp);
+  --chart-4: #8FA3B5;
+  --chart-5: #9C7E8E;
+  --sidebar: #1A2827;
+  --sidebar-foreground: var(--stone-grey-deep);
+  --sidebar-primary: var(--songci-celadon-soft);
+  --sidebar-primary-foreground: var(--ink-black);
+  --sidebar-accent: #243433;
+  --sidebar-accent-foreground: var(--xuan-white);
+  --sidebar-border: rgba(248, 245, 238, 0.10);
+  --sidebar-ring: var(--songci-celadon-soft);
 }
 
 @layer base {
@@ -124,8 +154,11 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "cv11";
   }
   html {
     @apply font-sans;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 }

@@ -15,9 +15,22 @@ export default function FlashcardsPage() {
   const translateError = useTranslateError();
 
   return (
-    <div className="space-y-4">
-      {kp && <h1 className="text-xl font-semibold">{t('page_title', { name: kp.name })}</h1>}
-      {isLoading && <Skeleton className="h-80 w-full max-w-xl mx-auto" />}
+    <div className="space-y-6">
+      {kp && (
+        <header className="space-y-0.5">
+          {/* Context label: sans label style */}
+          <p className="font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            {t('context_label')}
+          </p>
+          {/* Knowledge point name: serif headline — this IS the "subject being described" */}
+          <h1
+            className="font-serif text-[clamp(22px,3vw,32px)] font-semibold leading-[1.2] tracking-[0.02em] text-foreground"
+          >
+            {t('page_title', { name: kp.name })}
+          </h1>
+        </header>
+      )}
+      {isLoading && <Skeleton className="mx-auto h-80 w-full max-w-xl" />}
       {error && <ErrorState message={translateError(error)} />}
       {cards && <ReviewSession cards={cards} backHref={`/knowledge/${kpId}`} />}
     </div>
