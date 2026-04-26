@@ -93,7 +93,12 @@
       "show_original": "Show original Chinese",
       "hide_original": "Hide original"
     },
-    "degraded_notice": "Fallback to Chinese answer — English generation temporarily unavailable."
+    "degraded_notice": "Fallback to Chinese answer — English generation temporarily unavailable.",
+    "degraded": {
+      "stream_broken": "Connection interrupted; answer may be incomplete.",
+      "parse_degraded": "AI output format unexpected; showing what is available.",
+      "translate_answer_failed": "English answer generation failed; degraded."
+    }
   },
   "errors": {
     "app_title": "Service temporarily unavailable",
