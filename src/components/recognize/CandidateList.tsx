@@ -40,10 +40,10 @@ export function CandidateList({ result, onReset }: Props) {
       </div>
       {result.candidates.map((c) => (
         <Link key={c.bridge_id} href={`/bridges/${c.bridge_id}`}
-          className="block rounded-md border bg-card p-4 hover:bg-accent hover:text-accent-foreground">
+          className="group block rounded-md border bg-card p-4 transition-colors hover:border-accent/60 hover:bg-accent/5">
           <div className="flex items-baseline justify-between">
             <p className="text-base font-semibold">{c.name}</p>
-            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+            <ArrowRight className="h-4 w-4 text-muted-foreground transition-all group-hover:translate-x-0.5 group-hover:text-accent" />
           </div>
           <div className="mt-1 flex flex-wrap gap-1.5 text-xs">
             <Badge>{c.bridge_type}</Badge>
