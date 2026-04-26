@@ -39,8 +39,12 @@
   },
   "home": {
     "hero_title": "千年古桥\n一念即达",
-    "hero_subtitle": "中国古桥知识图谱 · 桥知 BridgingChina",
-    "cta": "开始探索"
+    "hero_subtitle": "中国古桥知识图谱。",
+    "hero_brand": "桥知",
+    "hero_brand_caption": "BridgingChina",
+    "cta": "走进知识图谱",
+    "quote_primary": "一桥一典，一典一城。",
+    "quote_secondary": "One bridge, one chapter · one chapter, one city."
   },
   "metadata": {
     "title": "桥知 BridgingChina · 古桥文化知识库",
@@ -103,7 +107,12 @@
     "UNKNOWN": "请求失败",
     "NETWORK": "网络异常，请稍后重试",
     "HTTP_ERROR": "服务返回错误（{status}）",
-    "SSE_CONNECT_FAILED": "连接失败，请稍后重试"
+    "SSE_CONNECT_FAILED": "连接失败，请稍后重试",
+    "TIMEOUT": "回答生成超时，请稍后重试或换个更具体的问法",
+    "RETRIEVAL_FAILED": "检索系统暂时不可用，请稍后重试",
+    "INSUFFICIENT_EVIDENCE": "未找到直接证据，建议换一种问法或缩小范围",
+    "INTERNAL_ERROR": "服务端内部错误，请稍后重试",
+    "ANSWER_FAILED": "回答生成失败，请稍后重试"
   },
   "feedback": {
     "error_title_default": "加载失败",

@@ -21,7 +21,7 @@ export function Header() {
   const tCommon = useTranslations('common');
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/80">
+    <header className="sticky top-0 z-40 border-b border-border bg-background">
       <div className="container mx-auto flex h-14 items-center gap-6 px-4">
         {/* Brand: serif + songci-celadon — Songti Reserve Rule: only the brand name, not nav */}
         <Link
@@ -57,8 +57,8 @@ export function Header() {
           <Link href="/search">
             <Button
               variant="ghost"
-              size="sm"
-              className="gap-2 text-muted-foreground hover:text-foreground"
+              size="default"
+              className="h-11 gap-2 text-muted-foreground hover:text-foreground"
             >
               <Search className="h-4 w-4" />
               <span className="hidden sm:inline">{tCommon('search')}</span>
@@ -66,8 +66,8 @@ export function Header() {
           </Link>
           <Button
             variant="ghost"
-            size="sm"
-            className="gap-2 text-muted-foreground hover:text-foreground"
+            size="default"
+            className="h-11 gap-2 text-muted-foreground hover:text-foreground"
             onClick={() => open({ type: null })}
           >
             <MessageCircleQuestion className="h-4 w-4" />

@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import '../globals.css';
 import type { ReactNode } from 'react';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
-import { getMessages, getTranslations } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { ConfigProvider } from '@/providers/ConfigProvider';
@@ -50,6 +50,13 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+
+  // Pin the locale into AsyncLocalStorage so any downstream
+  // `getMessages()` / `getTranslations()` / `useTranslations()` call (incl.
+  // those triggered by Server Components below) sees the correct locale even
+  // when `requestLocale` resolves to `null` on a re-entrant call.
+  // 没有这一行，URL `/en-US` 在浏览器 Accept-Language=zh 时会静默回退到默认 zh-CN。
+  setRequestLocale(locale);
 
   const messages = await getMessages();
 

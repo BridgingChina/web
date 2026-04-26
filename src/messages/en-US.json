@@ -38,9 +38,13 @@
     "brand": "桥知 BridgingChina"
   },
   "home": {
-    "hero_title": "Millennia of bridges,\na single thought away",
-    "hero_subtitle": "A Knowledge Graph of Ancient Chinese Bridges · 桥知 BridgingChina",
-    "cta": "Start exploring"
+    "hero_title": "Bridges of\nthe Middle Kingdom",
+    "hero_subtitle": "A knowledge graph of China's ancient bridges.",
+    "hero_brand": "桥知",
+    "hero_brand_caption": "Bridging China",
+    "cta": "Open the knowledge graph",
+    "quote_primary": "One bridge, one chapter · one chapter, one city.",
+    "quote_secondary": "一桥一典，一典一城。"
   },
   "metadata": {
     "title": "BridgingChina · Ancient Chinese Bridges Knowledge Base",
@@ -103,7 +107,12 @@
     "UNKNOWN": "Request failed",
     "NETWORK": "Network error, please try again later",
     "HTTP_ERROR": "Server returned an error ({status})",
-    "SSE_CONNECT_FAILED": "Connection failed, please try again later"
+    "SSE_CONNECT_FAILED": "Connection failed, please try again later",
+    "TIMEOUT": "Answer generation timed out. Please retry or try a more specific question.",
+    "RETRIEVAL_FAILED": "Retrieval is temporarily unavailable, please try again later.",
+    "INSUFFICIENT_EVIDENCE": "No direct evidence found. Try rephrasing or narrowing the scope.",
+    "INTERNAL_ERROR": "Internal server error, please try again later.",
+    "ANSWER_FAILED": "Answer generation failed, please try again later."
   },
   "feedback": {
     "error_title_default": "Failed to load",
