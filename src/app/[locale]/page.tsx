@@ -13,7 +13,7 @@ export default async function LandingPage({
   const isCJK = locale.startsWith('zh');
 
   // CJK 4 字一行 vs EN 长单词混排：字号曲线必须分开校。
-  // CN 走原 display 上限；EN 缩到 ~½ 字号 + 紧字距，21ch 兜底。
+  // CN 走原 display 上限；EN 用 \n 显式两行，每行 nowrap，避免被 maxWidth 二次回卷。
   const titleStyle = isCJK
     ? {
         color: 'var(--accent)',
@@ -25,7 +25,6 @@ export default async function LandingPage({
         color: 'var(--accent)',
         fontSize: 'clamp(40px, 7.5vw, 88px)',
         letterSpacing: '0.01em',
-        maxWidth: '14ch',
       };
 
   return (
