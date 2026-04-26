@@ -62,6 +62,13 @@ export function QASheet() {
           case 'done':      setDone(ev.data as QADoneEvent); break;
           case 'error':     setError(ev.data as QAErrorEvent); break;
           case 'ping': break;
+          // RAG #185: backend may emit a standalone `degraded` event mid-stream
+          // when JSONStreamParser raises ParseDegradedError. The final `done`
+          // event carries the authoritative degraded flag — just ack here.
+          case 'degraded': break;
+          // i18n Phase 4 en-US flow emits the Chinese-translated query.
+          // `started` already carries `question_zh`; suppress to silence noise.
+          case 'translated_query': break;
         }
       }
       const finalStatus = useQAStore.getState().status;

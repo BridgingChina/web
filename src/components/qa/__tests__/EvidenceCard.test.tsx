@@ -66,7 +66,8 @@ describe('EvidenceCard', () => {
 
     it('renders the citation index and source title', () => {
       render(wrap(<EvidenceCard source={baseSource} index={3} />, 'en-US'));
-      expect(screen.getByText('[3]')).toBeInTheDocument();
+      // EvidenceCard pads single digits to 2 chars per Songci Celadon design.
+      expect(screen.getByText('[03]')).toBeInTheDocument();
       expect(screen.getByText('Record of Zhaozhou Bridge')).toBeInTheDocument();
     });
   });
