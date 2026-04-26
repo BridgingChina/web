@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { EvidenceCard } from './EvidenceCard';
 
 export function QAResult() {
-  const { status, outline, details, deepDive, sources, error, degraded } = useQAStore();
+  const { status, outline, details, deepDive, sources, error, degraded, degradedReason } = useQAStore();
   const router = useRouter();
   const t = useTranslations('qa');
   const tErrors = useTranslations('errors');
@@ -70,19 +70,6 @@ export function QAResult() {
 
   return (
     <div className="space-y-6">
-      {degraded && (
-        <div
-          role="status"
-          className="rounded-lg border p-3 font-sans text-sm text-foreground"
-          style={{
-            borderColor: 'var(--yellow-hemp)',
-            background: 'color-mix(in srgb, var(--yellow-hemp) 8%, var(--rice-paper))',
-          }}
-        >
-          {t('degraded_notice')}
-        </div>
-      )}
-
       {outline && outline.key_points.length > 0 && (
         <section className="space-y-3">
           <h3 className="font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
@@ -175,6 +162,21 @@ export function QAResult() {
             )}
           </Tabs>
         </section>
+      )}
+
+      {degraded && degradedReason && (
+        <div
+          role="status"
+          className="rounded-lg border p-3 font-sans text-sm text-foreground"
+          style={{
+            borderColor: 'var(--yellow-hemp)',
+            background: 'color-mix(in srgb, var(--yellow-hemp) 8%, var(--rice-paper))',
+          }}
+        >
+          {t.has(`degraded.${degradedReason}`)
+            ? t(`degraded.${degradedReason}`)
+            : t('degraded.stream_broken')}
+        </div>
       )}
 
       {sources && sources.sources.length > 0 && (
