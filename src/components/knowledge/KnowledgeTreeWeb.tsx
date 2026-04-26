@@ -68,7 +68,7 @@ function CategoryNode({ category }: { category: KnowledgeTreeCategory }) {
               <Link
                 href={`/knowledge/${kp.id}`}
                 className={cn(
-                  'flex items-start gap-2 rounded px-2 py-1.5 text-sm hover:bg-accent',
+                  'flex items-start gap-2 rounded px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground',
                 )}
               >
                 <span className="flex-1">{kp.name}</span>

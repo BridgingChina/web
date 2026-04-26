@@ -51,7 +51,7 @@ export function LanguageSwitcher() {
             className={
               active
                 ? 'px-3 py-1 rounded bg-primary text-primary-foreground text-sm'
-                : 'px-3 py-1 rounded border border-input hover:bg-accent text-sm disabled:opacity-50'
+                : 'px-3 py-1 rounded border border-input hover:bg-accent hover:text-accent-foreground text-sm disabled:opacity-50'
             }
           >
             {lang.label}

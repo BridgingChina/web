@@ -40,7 +40,7 @@ export function CandidateList({ result, onReset }: Props) {
       </div>
       {result.candidates.map((c) => (
         <Link key={c.bridge_id} href={`/bridges/${c.bridge_id}`}
-          className="block rounded-md border bg-card p-4 hover:bg-accent">
+          className="block rounded-md border bg-card p-4 hover:bg-accent hover:text-accent-foreground">
           <div className="flex items-baseline justify-between">
             <p className="text-base font-semibold">{c.name}</p>
             <ArrowRight className="h-4 w-4 text-muted-foreground" />
