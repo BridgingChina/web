@@ -59,7 +59,7 @@ function FilterGroup({
       <button
         type="button"
         onClick={() => onChange(undefined)}
-        className={`rounded-full border px-2 py-0.5 text-xs ${!value ? 'bg-accent' : 'hover:bg-accent/50'}`}
+        className={`rounded-full border px-2 py-0.5 text-xs ${!value ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50'}`}
       >
         {allLabel}
       </button>
