@@ -58,7 +58,7 @@ export default async function LandingPage({
             className="font-serif text-[clamp(18px,2vw,24px)] font-medium leading-[1.55] whitespace-nowrap"
           >
             {t('hero_brand')}
-            <span className="ml-1 font-serif text-[0.85em] tracking-wide text-muted-foreground">
+            <span className="ml-1 font-serif text-[0.85em] tracking-wide">
               {t('hero_brand_caption')}
             </span>
           </span>
