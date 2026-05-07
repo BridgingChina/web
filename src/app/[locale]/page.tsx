@@ -45,12 +45,20 @@ export default async function LandingPage({
           <span className="font-serif text-[clamp(18px,2vw,24px)] font-medium leading-[1.55] tracking-[0.01em]">
             {t('hero_subtitle')}
           </span>
+          {t('hero_separator') && (
+            <span
+              aria-hidden
+              className="font-serif text-[clamp(18px,2vw,24px)] font-medium leading-[1.55] text-muted-foreground"
+            >
+              {t('hero_separator')}
+            </span>
+          )}
           <span
             lang="zh-Hans"
             className="font-serif text-[clamp(18px,2vw,24px)] font-medium leading-[1.55] whitespace-nowrap"
           >
             {t('hero_brand')}
-            <span className="ml-1 font-sans text-[0.85em] tracking-wide text-muted-foreground">
+            <span className="ml-1 font-serif text-[0.85em] tracking-wide text-muted-foreground">
               {t('hero_brand_caption')}
             </span>
           </span>
