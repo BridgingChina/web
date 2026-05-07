@@ -41,26 +41,16 @@ export default async function LandingPage({
           {t('hero_title')}
         </h1>
 
-        <p className="mt-10 flex max-w-2xl flex-wrap items-baseline justify-center gap-x-3 gap-y-1 text-foreground/90">
-          <span className="font-serif text-[clamp(18px,2vw,24px)] font-medium leading-[1.55] tracking-[0.01em]">
-            {t('hero_subtitle')}
-          </span>
-          {t('hero_separator') && (
-            <span
-              aria-hidden
-              className="font-serif text-[clamp(18px,2vw,24px)] font-medium leading-[1.55] text-muted-foreground"
-            >
-              {t('hero_separator')}
-            </span>
-          )}
-          <span
-            lang="zh-Hans"
-            className="font-serif text-[clamp(18px,2vw,24px)] font-medium leading-[1.55] whitespace-nowrap"
-          >
-            {t('hero_brand')}
-            <span className="ml-1 font-serif text-[0.85em] tracking-wide">
-              {t('hero_brand_caption')}
-            </span>
+        <p className="mt-10 max-w-2xl font-serif text-[clamp(18px,2vw,24px)] font-medium leading-[1.55] tracking-[0.01em] text-foreground/90">
+          {t('hero_subtitle')}
+        </p>
+        <p
+          lang="zh-Hans"
+          className="mt-3 font-serif text-[clamp(18px,2vw,24px)] font-medium leading-[1.55] text-foreground/90 whitespace-nowrap"
+        >
+          {t('hero_brand')}
+          <span className="ml-1 font-serif text-[0.85em] tracking-wide">
+            {t('hero_brand_caption')}
           </span>
         </p>
 
