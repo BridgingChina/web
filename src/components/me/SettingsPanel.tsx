@@ -1,16 +1,12 @@
 'use client';
 import { useTranslations } from 'next-intl';
-import { useDeviceStore } from '@/stores/deviceStore';
-import { useConfig } from '@/api/hooks/useConfig';
 import { useSession, signOut } from '@/lib/auth-client';
 import { Button } from '@/components/ui/button';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 const CONSOLE_URL = 'https://console.bridgingchina.net';
 
 export function SettingsPanel() {
-  const language = useDeviceStore((s) => s.language);
-  const setLanguage = useDeviceStore((s) => s.setLanguage);
-  const { data: cfg } = useConfig();
   const { data: session } = useSession();
   const t = useTranslations('me.settings');
   const tCommon = useTranslations('common');
@@ -47,22 +43,7 @@ export function SettingsPanel() {
 
       <section>
         <h3 className="mb-2 text-sm font-medium">{t('language')}</h3>
-        <div className="flex gap-2">
-          {/*
-            Each language label stays in its own script regardless of active
-            locale — standard i18n pattern (cf. LanguageSwitcher.tsx).
-          */}
-          <Button size="sm" variant={language === 'zh-CN' ? 'default' : 'outline'} onClick={() => setLanguage('zh-CN')}>中文</Button>
-          <Button size="sm" variant={language === 'en' ? 'default' : 'outline'} onClick={() => setLanguage('en')}>English</Button>
-        </div>
-      </section>
-
-      <section>
-        <h3 className="mb-2 text-sm font-medium">{t('map_source')}</h3>
-        <p className="text-sm text-muted-foreground">
-          {cfg?.map?.provider ?? t('map_unconfigured')}
-          {cfg?.map?.approval_number ? ` · ${t('map_approval_prefix')} ${cfg.map.approval_number}` : ''}
-        </p>
+        <LanguageSwitcher />
       </section>
 
       {session && (session.user as { role?: string }).role === 'admin' && (

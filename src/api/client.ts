@@ -15,9 +15,7 @@ function needsAuth(path: string): boolean {
 
 // Read NEXT_LOCALE cookie on client runtime. Returns null if not running in a
 // browser or the cookie is absent. Server runtime (RSC / Server Actions) should
-// pass `locale` explicitly via request options — this fallback exists so legacy
-// client callsites don't regress after Phase 1 dropped deviceStore.language as
-// the Accept-Language source.
+// pass `locale` explicitly via request options.
 function readLocaleCookie(): string | null {
   if (typeof document === 'undefined') return null;
   const match = document.cookie.match(/(?:^|; )NEXT_LOCALE=([^;]+)/);

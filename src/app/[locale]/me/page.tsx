@@ -8,7 +8,6 @@ import { TodayReviewCard } from '@/components/me/TodayReviewCard';
 import { FavoritesList } from '@/components/me/FavoritesList';
 import { HistoryList } from '@/components/me/HistoryList';
 import { SettingsPanel } from '@/components/me/SettingsPanel';
-import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 const AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL ?? 'https://auth.bridgingchina.net';
 
@@ -48,7 +47,6 @@ function LoginPrompt() {
 }
 
 export default function MePage() {
-  const tCommon = useTranslations('common');
   const tMe = useTranslations('me');
   const { data: session, isPending } = useSession();
   if (isPending) return <MeSkeleton />;
@@ -83,19 +81,6 @@ export default function MePage() {
         <TabsContent value="history" className="pt-4"><HistoryList /></TabsContent>
         <TabsContent value="settings" className="pt-4"><SettingsPanel /></TabsContent>
       </Tabs>
-
-      <section
-        className="mt-8 pt-6"
-        style={{ borderTop: '1px solid var(--stone-grey)' }}
-      >
-        <h2 className="mb-3 font-sans text-base font-semibold text-foreground">
-          {tCommon('settings')}
-        </h2>
-        <div className="flex items-center gap-4">
-          <span className="font-sans text-sm text-muted-foreground">{tCommon('language_label')}</span>
-          <LanguageSwitcher />
-        </div>
-      </section>
     </div>
   );
 }

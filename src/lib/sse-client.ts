@@ -1,5 +1,3 @@
-import { useDeviceStore } from '@/stores/deviceStore';
-
 export type SSEEvent = { event: string; data: unknown };
 
 export interface AskRequest {
@@ -9,36 +7,22 @@ export interface AskRequest {
 
 const DEFAULT_LOCALE = 'zh-CN';
 
-// Mirror of `src/api/client.ts#readLocaleCookie` — pulled inline because the
-// SSE code path used to read a device-local preference and we don't want to
-// take a dependency on the whole API client module. Keep the two readers in
-// sync: both resolve `NEXT_LOCALE` on client runtime and return null on SSR.
+// Mirror of `src/api/client.ts#readLocaleCookie` — kept inline so this module
+// doesn't depend on the whole API client. Both readers resolve `NEXT_LOCALE`
+// on client runtime and return null on SSR.
 function readLocaleCookie(): string | null {
   if (typeof document === 'undefined') return null;
   const match = document.cookie.match(/(?:^|; )NEXT_LOCALE=([^;]+)/);
   return match ? decodeURIComponent(match[1]) : null;
 }
 
-/**
- * Resolve the active locale for SSE requests. Phase 4 makes the browser's
- * locale cookie (set by next-intl middleware) the source of truth so that the
- * QA backend can branch on `Accept-Language: en-US` without the user having
- * to flip a separate deviceStore toggle. Falls back to `deviceStore.language`
- * (normalised to the BCP-47 form) so that any legacy caller that sets the
- * store still gets a sensible header.
- *
- * Phase 5 rollback flag: when `NEXT_PUBLIC_I18N_ENABLED === 'false'` we hard
- * force zh-CN regardless of cookies. Paired with the backend's
- * `settings.i18n_enabled` — flip both and the en-US path is completely
- * disabled without shipping code.
- */
+// `NEXT_LOCALE` (set by next-intl middleware) is the source of truth.
+// `NEXT_PUBLIC_I18N_ENABLED=false` is the Phase 5 kill switch that forces
+// zh-CN regardless of cookie state — paired with the backend's
+// `settings.i18n_enabled` flag.
 function resolveLocale(): string {
   if (process.env.NEXT_PUBLIC_I18N_ENABLED === 'false') return DEFAULT_LOCALE;
-  const cookie = readLocaleCookie();
-  if (cookie) return cookie;
-  const { language } = useDeviceStore.getState();
-  if (language === 'en') return 'en-US';
-  return language ?? DEFAULT_LOCALE;
+  return readLocaleCookie() ?? DEFAULT_LOCALE;
 }
 
 export function parseSSEFrames(buf: string): { events: SSEEvent[]; remainder: string } {

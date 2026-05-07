@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { askQuestion, parseSSEFrames } from '../sse-client';
-import { useDeviceStore } from '@/stores/deviceStore';
 
 describe('parseSSEFrames', () => {
   it('parses well-formed event blocks', () => {
@@ -40,9 +39,8 @@ describe('askQuestion', () => {
     vi.unstubAllEnvs();
     vi.unstubAllGlobals();
     vi.stubEnv('NEXT_PUBLIC_API_BASE_URL', 'http://test/v1');
-    useDeviceStore.setState({ language: 'zh-CN' });
     // Clear any cookie a prior test set so resolveLocale() falls through to
-    // the deviceStore default.
+    // DEFAULT_LOCALE.
     document.cookie = 'NEXT_LOCALE=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
   });
 
